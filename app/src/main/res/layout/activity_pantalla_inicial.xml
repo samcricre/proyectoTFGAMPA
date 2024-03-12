@@ -32,7 +32,7 @@
             android:backgroundTint="#FFFFFF"
             android:text="Iniciar Sesión"
             android:textColor="#003E77"
-            android:textSize="18sp"
+            android:textSize="20sp"
             app:cornerRadius="15sp" />
 
         <Button
@@ -43,7 +43,7 @@
             android:backgroundTint="#FFFFFF"
             android:text="Registro"
             android:textColor="#003E77"
-            android:textSize="18sp"
+            android:textSize="20sp"
             app:cornerRadius="15sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
