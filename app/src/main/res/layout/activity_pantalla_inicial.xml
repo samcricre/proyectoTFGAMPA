@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#003E77"
+    tools:context=".PantallaInicial">
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="35dp"
+            app:srcCompat="@drawable/logo_calderon_de_la_barca" />
+
+        <Button
+            android:id="@+id/btLogin"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="75dp"
+            android:backgroundTint="#FFFFFF"
+            android:text="Iniciar Sesión"
+            android:textColor="#003E77"
+            android:textSize="18sp"
+            app:cornerRadius="15sp" />
+
+        <Button
+            android:id="@+id/btRegistro"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="25dp"
+            android:backgroundTint="#FFFFFF"
+            android:text="Registro"
+            android:textColor="#003E77"
+            android:textSize="18sp"
+            app:cornerRadius="15sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
