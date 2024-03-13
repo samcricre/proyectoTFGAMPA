@@ -63,7 +63,7 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:id="@+id/nombreEditText"
+                        android:id="@+id/nombreRegister"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
@@ -82,7 +82,7 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:id="@+id/apellidosEditText"
+                        android:id="@+id/apellidosRegister"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
@@ -120,7 +120,7 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:id="@+id/telefonoEditText"
+                        android:id="@+id/telefRegister"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"

@@ -12,18 +12,28 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.regex.Pattern;
 
 public class PantallaRegistro extends AppCompatActivity {
 
     //Variables necesarias
     private Button register;
+    private EditText nombre;
+    private EditText apellido;
     private EditText email;
+    private EditText telef;
     private EditText passw;
     private EditText passwConfirm;
     private FirebaseAuth mAuth;
+    private DatabaseReference dr;
 
     /*
     * Pantalla registro
@@ -41,26 +51,33 @@ public class PantallaRegistro extends AppCompatActivity {
 
         //Declaramos las variables
         register = findViewById(R.id.registerButton);
+        nombre = findViewById(R.id.nombreRegister);
+        apellido = findViewById(R.id.apellidosRegister);
         email = findViewById(R.id.emailRegister);
+        telef = findViewById(R.id.telefRegister);
         passw = findViewById(R.id.passwRegister);
         passwConfirm = findViewById(R.id.passwConfiRegister);
         mAuth = FirebaseAuth.getInstance();//Damos la isntancia a mAuth para inicializarla
+        dr = FirebaseDatabase.getInstance().getReference();//Conseguimos la referencia
 
-        //Cuando le demos al botón de registro
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //Variables auxiliares que almacenarán los campos requeridos
-                //      [De momento solo estará email y passw]
+                //Datos necesarios
+                String nombreAux = nombre.getText().toString();
+                String apellidosAux = apellido.getText().toString();
                 String emailAux = email.getText().toString();
+                String telefAux = telef.getText().toString();
                 String passwAux = passw.getText().toString();
+                String passwConfiAux = passwConfirm.getText().toString();
 
-                //Confirmamos que no está vacíos los parametros obligatorios
-                if(emailAux.isEmpty()||passwAux.isEmpty()){
-                    //Si es el caso, se notifica y se para la función con un return
-                    Toast.makeText(PantallaRegistro.this,
-                            "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+                //Guardaremos los datos también en el tipo usuario
+                Usuario usuario = new Usuario(nombreAux,apellidosAux,emailAux,telefAux);
+
+                //Validación
+                if(!validacion(nombreAux,apellidosAux,emailAux,telefAux,passwAux,passwConfiAux)){
+                    //Si la validación es incorrecta, con un return para la función
                     return;
                 }
 
@@ -70,12 +87,12 @@ public class PantallaRegistro extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-                                    //En el caso de conseguirlo nos enviará a otra página
-                                    // [En esta caso nos envía al inicio]
-                                    Intent intent =
-                                            new Intent(PantallaRegistro.this,
-                                                    PantallaMensajes.class);
-                                    startActivity(intent);
+
+                                    //En el caso de conseguirlo como eso significa que el correo no
+                                    //está registrado y es único podremos crear el usuario en la
+                                    //base de datos. Por otro lado se nos manda a la siguiente página
+                                    createDataInDB(usuario);
+
                                 }
                                 else{
                                     //En el caso de fracaso, notificaremos que ya existe la cuenta
@@ -88,5 +105,90 @@ public class PantallaRegistro extends AppCompatActivity {
             }
         });
 
+    }
+
+    /*
+    * Una vez creada el usuario en auth, lo que haremos es crear también el usuario en la base de
+    * datos de nuestra app. En este caso en la RealTimeDatabase. Esto nos permitirá conocer sus
+    * posteriormente.
+    * */
+    public void createDataInDB(Usuario user){
+
+        String key = dr.child("usuarios").push().getKey();
+        dr.child("usuarios").child(key).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(PantallaRegistro.this, "Cuenta regitrada correctamente", Toast.LENGTH_SHORT).show();
+                Intent intent =
+                        new Intent(PantallaRegistro.this,
+                                PantallaMensajes.class);
+                startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(PantallaRegistro.this, "Error de la base de datos (no el auth)", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    /*
+    * Vamos a crear un método que nos servirá para realizar una validación de los datos introducidos
+    *
+    *   -Que ningún campo esté vacío
+    *   -Telefono tenga 9 numeros
+    *   -Correo con @ y luego un .
+    *   -Contraseña y contraseña de verificación iguales
+    *
+    * [Código optimizable]
+    * */
+    public boolean validacion(String nombre, String apellido, String email, String telf, String passw, String passwConf){
+        boolean valid = true;
+
+        //Que ningún campo esté vacío
+        if(nombre.isEmpty()||apellido.isEmpty()||email.isEmpty()||telf.isEmpty()||passw.isEmpty()||passwConf.isEmpty()){
+            valid = false;
+            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show();
+            return valid;
+        }
+
+        if(!validarTelefono(telf)){
+            valid = false;
+            Toast.makeText(this, "Formato del telefono incorrecto", Toast.LENGTH_SHORT).show();
+        }
+
+        if(!validarCorreo(email)){
+            valid = false;
+            Toast.makeText(this, "Formato del correo es incorrecto", Toast.LENGTH_SHORT).show();
+        }
+
+        if(!passw.equals(passwConf)){
+            valid = false;
+            Toast.makeText(this, "Contraseñas no coincidentes", Toast.LENGTH_SHORT).show();
+        }
+
+        return valid;
+    }
+
+
+    //Función para validar correo
+    public static boolean validarCorreo(String correo) {
+        // Expresión regular para verificar el formato de un correo electrónico
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        // Compilar la expresión regular en un patrón
+        Pattern pattern = Pattern.compile(regex);
+        // Verificar si el correo coincide con el patrón
+        return pattern.matcher(correo).matches();
+    }
+
+    //Función para validar telefono
+    public static boolean validarTelefono(String telefono) {
+        // Expresión regular para verificar el formato de un número de teléfono (9 dígitos)
+        String regex = "^\\d{9}$";
+        // Compilar la expresión regular en un patrón
+        Pattern pattern = Pattern.compile(regex);
+        // Verificar si el número de teléfono coincide con el patrón
+        return pattern.matcher(telefono).matches();
     }
 }
