@@ -42,6 +42,7 @@ public class PantallaCorreo extends AppCompatActivity {
         enviarButton = findViewById(R.id.button);
 
         // Obtener una referencia a la base de datos de Firebase  NOMBRES PROVISIONALES -------
+        //TODO
         correosRef = FirebaseDatabase.getInstance().getReference().child("correos");
 
         enviarButton.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +83,8 @@ public class PantallaCorreo extends AppCompatActivity {
         // Generar una clave única para el correo electrónico
         String correoID = correosRef.push().getKey();
 
-        // Crear un mapa con los datos del correo electrónico
+        // Crear un mapa con los datos del correo electrónico CLASE PROVISIONAL ---------------
+        //TODO
         Map<String, Object> correoValues = new HashMap<>();
         correoValues.put("remitente", remitente);
         correoValues.put("destinatario", destinatario);
