@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +41,7 @@ public class PantallaCorreo extends AppCompatActivity {
         contenidoEditText = findViewById(R.id.editTextTextMultiLine);
         enviarButton = findViewById(R.id.button);
 
-        // Obtener una referencia a la base de datos de Firebase
+        // Obtener una referencia a la base de datos de Firebase ---------- Nomber opcional
         correosRef = FirebaseDatabase.getInstance().getReference().child("correos");
 
         enviarButton.setOnClickListener(new View.OnClickListener() {
