@@ -17,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class PantallaLogin extends AppCompatActivity {
 
     //Variables necesarias
@@ -37,6 +39,7 @@ public class PantallaLogin extends AppCompatActivity {
      * tengamos una cuenta, tendremos que introducir el email y la contraseñá, los cuales serán
      * verificados gracias a signInWithEmailAndPassword() de FirebaseAuth
      * */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -12,7 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PantallasAMPA"
         tools:targetApi="31">
-
+        <activity
+            android:name=".PantallaCrearEventos"
+            android:exported="false" />
+        <activity
+            android:name=".PantallaEventos"
+            android:exported="false" />
+        <activity
+            android:name=".PantallaMensajes"
+            android:exported="false" />
         <activity
             android:name=".PantallaComunicacion"
             android:exported="false" />
