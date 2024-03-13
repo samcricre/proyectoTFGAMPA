@@ -54,7 +54,7 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextEmailAddress"
+                    android:id="@+id/emailBoxLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
@@ -73,7 +73,7 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/editTextTextPassword"
+                    android:id="@+id/passwBoxLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
@@ -95,7 +95,7 @@
             app:cornerRadius="15sp" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/irResgistro"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
