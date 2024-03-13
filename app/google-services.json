@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509402436814",
+    "project_id": "pantallasampa",
+    "storage_bucket": "pantallasampa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509402436814:android:9d96e7b372b3a41dc6ac9f",
+        "android_client_info": {
+          "package_name": "com.example.pantallasampa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu0tyTl-jSnN2ctKGQlSqdBRBmuOhcbAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
