@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PantallasAMPA"
         tools:targetApi="31">
+
+        <activity
+            android:name=".PantallaComunicacion"
+            android:exported="false" />
         <activity
             android:name=".PantallaPerfil"
             android:exported="false" />
@@ -26,12 +30,6 @@
             android:exported="false" />
         <activity
             android:name=".PantallaInicial"
-            android:exported="false" />
-        <activity
-            android:name=".correo"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
