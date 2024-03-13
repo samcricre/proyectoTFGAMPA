@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -17,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,13 +41,25 @@ public class PantallaCorreo extends AppCompatActivity {
         contenidoEditText = findViewById(R.id.editTextTextMultiLine);
         enviarButton = findViewById(R.id.button);
 
-        // Obtener una referencia a la base de datos de Firebase ---------- Nomber opcional
+        // Obtener una referencia a la base de datos de Firebase  NOMBRES PROVISIONALES -------
+        //TODO
         correosRef = FirebaseDatabase.getInstance().getReference().child("correos");
 
         enviarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 enviarCorreo();
+            }
+        });
+
+        // Obtén la referencia al TextView
+        TextView cancelarTextView = findViewById(R.id.textView16);
+
+        // Agrega un OnClickListener al TextView para cancelar el correo
+        cancelarTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelarCorreo();
             }
         });
     }
@@ -71,16 +83,16 @@ public class PantallaCorreo extends AppCompatActivity {
         // Generar una clave única para el correo electrónico
         String correoID = correosRef.push().getKey();
 
-        // Crear un mapa con los datos del correo electrónico CLASE PENDIENTE ---------
+        // Crear un mapa con los datos del correo electrónico CLASE PROVISIONAL ---------------
+        //TODO
         Map<String, Object> correoValues = new HashMap<>();
         correoValues.put("remitente", remitente);
         correoValues.put("destinatario", destinatario);
         correoValues.put("asunto", asunto);
         correoValues.put("contenido", contenido);
-        // ---------------
 
         // Guardar el correo electrónico en la base de datos
-        correosRef.child("conversacionID1").child(correoID).setValue(correoValues)
+        correosRef.child(correoID).setValue(correoValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -99,10 +111,11 @@ public class PantallaCorreo extends AppCompatActivity {
                 });
     }
 
-    //Metodo que cancela el correo y vuelve de vuelta a la pantalla de mensajes
-    public void cancelarCorreo(View view){
-        Intent intent =  new Intent(this, PantallaMensajes.class);
+    // Método para cancelar el correo y volver a la pantalla de mensajes
+    private void cancelarCorreo() {
+        Toast.makeText(this, "Correo cancelado", Toast.LENGTH_SHORT).show();
+        // Vuelve a la pantalla de mensajes
+        Intent intent = new Intent(this, PantallaMensajes.class);
         startActivity(intent);
     }
-
 }
