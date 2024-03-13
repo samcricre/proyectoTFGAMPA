@@ -101,7 +101,7 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:id="@+id/emailEditText"
+                        android:id="@+id/emailRegister"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
@@ -139,7 +139,7 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:id="@+id/passwordEditText"
+                        android:id="@+id/passwRegister"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
@@ -158,7 +158,7 @@
                         android:textSize="20sp" />
 
                     <EditText
-                        android:id="@+id/verificarContraseñaEditText"
+                        android:id="@+id/passwConfiRegister"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
@@ -171,7 +171,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/btAccederRegistro"
+            android:id="@+id/registerButton"
             android:layout_width="250dp"
             android:layout_height="60dp"
             android:layout_marginTop="35dp"
