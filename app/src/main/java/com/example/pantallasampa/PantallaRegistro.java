@@ -74,7 +74,7 @@ public class PantallaRegistro extends AppCompatActivity {
                                     // [En esta caso nos envía al inicio]
                                     Intent intent =
                                             new Intent(PantallaRegistro.this,
-                                                    PantallaInicial.class);
+                                                    PantallaMensajes.class);
                                     startActivity(intent);
                                 }
                                 else{

@@ -81,7 +81,7 @@ public class PantallaLogin extends AppCompatActivity {
                                     //  [El intent debe cambiarse para la versión final]
                                     Intent intent =
                                             new Intent(PantallaLogin.this,
-                                                    PantallaInicial.class);
+                                                    PantallaMensajes.class);
                                     startActivity(intent);
                                 }
                                 else{
