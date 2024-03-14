@@ -118,7 +118,7 @@ public class PantallaEventos extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PantallaEventos.this, PantallaEventos.class);
+                Intent intent = new Intent(PantallaEventos.this, PantallaPerfil.class);
                 intent.putExtra("emailUser",emailUser);
                 startActivity(intent);
             }
@@ -126,7 +126,7 @@ public class PantallaEventos extends AppCompatActivity {
         email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PantallaEventos.this, PantallaEventos.class);
+                Intent intent = new Intent(PantallaEventos.this, PantallaMensajes.class);
                 intent.putExtra("emailUser",emailUser);
                 startActivity(intent);
             }
@@ -136,7 +136,7 @@ public class PantallaEventos extends AppCompatActivity {
 
 
 
-
-
     }
+
+
 }
