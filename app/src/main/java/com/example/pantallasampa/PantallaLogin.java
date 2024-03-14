@@ -96,7 +96,7 @@ public class PantallaLogin extends AppCompatActivity {
 
                                     //Si se consegue, se nos enviará a la siguiente pantalla
                                     //  [El intent debe cambiarse para la versión final]
-                                    Intent intent = new Intent(PantallaLogin.this, PantallaPerfil.class);
+                                    Intent intent = new Intent(PantallaLogin.this, PantallaEventos.class);
                                     intent.putExtra("emailUser", userEmail);
                                     startActivity(intent);
                                 }
