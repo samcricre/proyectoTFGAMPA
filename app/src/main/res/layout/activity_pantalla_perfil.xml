@@ -137,14 +137,12 @@
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/textView11"
+                            android:id="@+id/tVNombre"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:layout_weight="1"
                             android:background="#FFFFFF"
                             android:paddingHorizontal="5dp"
-                            android:text="TextView"
-                            android:textColor="#000000"
                             android:textSize="20sp" />
                     </LinearLayout>
 
@@ -164,14 +162,12 @@
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/textView10"
+                            android:id="@+id/tVApellidos"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:layout_weight="1"
                             android:background="#FFFFFF"
                             android:paddingHorizontal="5dp"
-                            android:text="TextView"
-                            android:textColor="#000000"
                             android:textSize="20sp" />
 
                     </LinearLayout>
@@ -184,7 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:text="Datos tutor 2 :"
+                android:text="Datos de contacto :"
                 android:textSize="20sp" />
 
             <androidx.cardview.widget.CardView
@@ -213,18 +209,17 @@
                             android:layout_width="200dp"
                             android:layout_height="25dp"
                             android:layout_weight="1"
-                            android:text="Nombre :"
+                            android:text="Correo :"
                             android:textColor="#FFFFFF"
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/textView5"
+                            android:id="@+id/tVCorreo"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:layout_weight="1"
                             android:background="#FFFFFF"
                             android:paddingHorizontal="5dp"
-                            android:text="TextView"
                             android:textSize="20sp" />
                     </LinearLayout>
 
@@ -239,18 +234,17 @@
                             android:layout_width="200dp"
                             android:layout_height="25dp"
                             android:layout_weight="1"
-                            android:text="Apellidos :"
+                            android:text="Teléfono :"
                             android:textColor="#FFFFFF"
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/textView18"
+                            android:id="@+id/tVTelefono"
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
                             android:layout_weight="1"
                             android:background="#FFFFFF"
                             android:paddingHorizontal="5dp"
-                            android:text="TextView"
                             android:textSize="20sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -270,75 +264,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:text="TextView"
+                android:text="Hijos/as"
                 android:textSize="20sp" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="375dp"
-                android:layout_height="100dp"
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="#003E77"
-                app:cardCornerRadius="15dp" >
+                android:layout_marginTop="15dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="15dp"
-                    android:layout_marginVertical="15dp"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
+            </ListView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/textView21"
-                            android:layout_width="200dp"
-                            android:layout_height="25dp"
-                            android:layout_weight="1"
-                            android:text="Nombre :"
-                            android:textColor="#FFFFFF"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/textView20"
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp"
-                            android:layout_weight="1"
-                            android:background="#FDFDFD"
-                            android:paddingHorizontal="5dp"
-                            android:text="TextView"
-                            android:textSize="20sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/textView22"
-                            android:layout_width="200dp"
-                            android:layout_height="25dp"
-                            android:layout_weight="1"
-                            android:text="Nombre :"
-                            android:textColor="#FFFFFF"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/textView23"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#B6DCFF"
+                android:gravity="center"
+                android:onClick="navCrearHijo"
+                android:text="+"
+                android:textColor="#003E77"
+                android:textSize="24sp"
+                app:cornerRadius="10dp" />
 
             <View
                 android:id="@+id/divider3"

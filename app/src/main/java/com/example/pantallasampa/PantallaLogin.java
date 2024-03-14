@@ -18,6 +18,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class PantallaLogin extends AppCompatActivity {
 
@@ -27,6 +33,8 @@ public class PantallaLogin extends AppCompatActivity {
     private Button accessButton;
     private TextView irRegister;
     private FirebaseAuth mAuth;
+
+    private DatabaseReference dr;
 
     /*
      * Pantalla login
@@ -77,11 +85,19 @@ public class PantallaLogin extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
+
+                                    //Codigo de prueba de samuel para pasar el email del usuario logeado
+
+                                    //Obtenemos el usuario actualmente autenticado
+                                    FirebaseUser user = mAuth.getCurrentUser();
+
+                                    String userEmail = user.getEmail();
+
+
                                     //Si se consegue, se nos enviará a la siguiente pantalla
                                     //  [El intent debe cambiarse para la versión final]
-                                    Intent intent =
-                                            new Intent(PantallaLogin.this,
-                                                    PantallaMensajes.class);
+                                    Intent intent = new Intent(PantallaLogin.this, PantallaPerfil.class);
+                                    intent.putExtra("emailUser", userEmail);
                                     startActivity(intent);
                                 }
                                 else{
