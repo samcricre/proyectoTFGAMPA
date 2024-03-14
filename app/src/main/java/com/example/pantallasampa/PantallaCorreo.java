@@ -41,8 +41,7 @@ public class PantallaCorreo extends AppCompatActivity {
         contenidoEditText = findViewById(R.id.editTextTextMultiLine);
         enviarButton = findViewById(R.id.button);
 
-        // Obtener una referencia a la base de datos de Firebase  NOMBRES PROVISIONALES -------
-        //TODO
+        // Obtener una referencia a la base de datos de Firebase
         correosRef = FirebaseDatabase.getInstance().getReference().child("correos");
 
         enviarButton.setOnClickListener(new View.OnClickListener() {
@@ -80,19 +79,11 @@ public class PantallaCorreo extends AppCompatActivity {
             return;
         }
 
-        // Generar una clave única para el correo electrónico
-        String correoID = correosRef.push().getKey();
+        // Crear un objeto Correo con los datos ingresados
+        Correo correo = new Correo(remitente, destinatario, asunto, contenido);
 
-        // Crear un mapa con los datos del correo electrónico CLASE PROVISIONAL ---------------
-        //TODO
-        Map<String, Object> correoValues = new HashMap<>();
-        correoValues.put("remitente", remitente);
-        correoValues.put("destinatario", destinatario);
-        correoValues.put("asunto", asunto);
-        correoValues.put("contenido", contenido);
-
-        // Guardar el correo electrónico en la base de datos
-        correosRef.child(correoID).setValue(correoValues)
+        // Guardar el correo en la base de datos
+        correosRef.push().setValue(correo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
