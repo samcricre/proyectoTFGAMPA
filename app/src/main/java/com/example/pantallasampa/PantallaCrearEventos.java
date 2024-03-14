@@ -15,6 +15,11 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -40,6 +45,10 @@ public class PantallaCrearEventos extends AppCompatActivity {
     int horaInicio,minutoInicio;
     int horaFin,minFin;
 
+    boolean diaEntero = false;
+
+    DatabaseReference dr;
+
 
 
     @Override
@@ -63,6 +72,8 @@ public class PantallaCrearEventos extends AppCompatActivity {
         textoHoraFin  = findViewById(R.id.horaFin);
         duracionTodoDia = findViewById(R.id.checkBoxTodoDia);
 
+        dr = FirebaseDatabase.getInstance().getReference();
+
 
 
 
@@ -85,6 +96,9 @@ public class PantallaCrearEventos extends AppCompatActivity {
                     btHoraInicio.setEnabled(false);
                     btHoraFin.setEnabled(false);
 
+                    //Indicamos que está chequeado
+                    diaEntero = true;
+
                 }else{
 
                     //CheckBox desmarcado
@@ -93,6 +107,9 @@ public class PantallaCrearEventos extends AppCompatActivity {
                     textoHoraFin.setEnabled(true);
                     btHoraInicio.setEnabled(true);
                     btHoraFin.setEnabled(true);
+
+                    //Indicamos que deja de estar chequeado
+                    diaEntero = false;
 
                 }
 
@@ -195,17 +212,23 @@ public class PantallaCrearEventos extends AppCompatActivity {
         String horaInicioTxt = textoHoraInicio.getText().toString();
         String horaFinTxt = textoHoraFin.getText().toString();
 
-        /*
+        Evento nuevoEvento;
 
-        Evento nuevoEvento = new Evento(titulo.getText().toString(),descripcion.getText().toString(),fechaInicioTxt,fechaFinTxt,horaInicioTxt,horaFinTxt);
+        if(!diaEntero){
+            nuevoEvento = new Evento(titulo.getText().toString(),descripcion.getText().toString(),"CLASE",fechaInicioTxt,fechaFinTxt,horaInicioTxt,horaFinTxt);
+        }
+        else{
+            nuevoEvento = new Evento(titulo.getText().toString(),descripcion.getText().toString(),"CLASE",fechaInicioTxt,fechaFinTxt);
+        }
 
-        Usuario.getEventos().add(nuevoEvento);
+        String key = dr.child("eventos").push().getKey();
+        dr.child("eventos").child(key).setValue(nuevoEvento).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(PantallaCrearEventos.this, "Evento creado", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        Intent i = new Intent(this,Calendario.class);
-        i.putExtra("usuario", usuario);
-        startActivity(i);
-
-        */
 
 
     }
