@@ -3,6 +3,7 @@ package com.example.pantallasampa;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,11 +28,13 @@ public class PantallaMensajes extends AppCompatActivity {
     private List<Correo> listaCorreos;
     private DatabaseReference correosRef;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pantalla_correo);
+        setContentView(R.layout.activity_pantalla_mensajes);
 
+        //TODO
         listViewCorreos = findViewById(R.id.listviewmensajes);
         listaCorreos = new ArrayList<>();
         correosRef = FirebaseDatabase.getInstance().getReference().child("correos");
