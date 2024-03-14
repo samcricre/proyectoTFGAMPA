@@ -6,8 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import com.example.pantallasampa.Correo;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CorreoAdapter extends ArrayAdapter<Correo> {
 
@@ -38,7 +42,15 @@ public class CorreoAdapter extends ArrayAdapter<Correo> {
         TextView contenidoTextView = listItem.findViewById(R.id.contenidoTextView);
         contenidoTextView.setText(currentCorreo.getContenido());
 
+        TextView fechaTextView = listItem.findViewById(R.id.fechaTextView);
+        fechaTextView.setText(formatFecha(currentCorreo.getTimestamp()));
+
         return listItem;
     }
-}
 
+    // Método para formatear la fecha en formato legible
+    private String formatFecha(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        return sdf.format(timestamp);
+    }
+}

@@ -5,16 +5,18 @@ public class Correo {
     private String destinatario;
     private String asunto;
     private String contenido;
+    private long timestamp;
 
     public Correo() {
         // Constructor vacío requerido por Firebase
     }
 
-    public Correo(String remitente, String destinatario, String asunto, String contenido) {
+    public Correo(String remitente, String destinatario, String asunto, String contenido, long timestamp) {
         this.remitente = remitente;
         this.destinatario = destinatario;
         this.asunto = asunto;
         this.contenido = contenido;
+        this.timestamp = timestamp;
     }
 
     public String getRemitente() {
@@ -48,5 +50,12 @@ public class Correo {
     public void setContenido(String contenido) {
         this.contenido = contenido;
     }
-}
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+}

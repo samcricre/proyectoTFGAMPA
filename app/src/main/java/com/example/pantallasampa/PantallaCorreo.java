@@ -61,6 +61,8 @@ public class PantallaCorreo extends AppCompatActivity {
                 cancelarCorreo();
             }
         });
+
+
     }
 
 
@@ -79,8 +81,11 @@ public class PantallaCorreo extends AppCompatActivity {
             return;
         }
 
+        // Obtener la marca de tiempo actual
+        long timestamp = System.currentTimeMillis();
+
         // Crear un objeto Correo con los datos ingresados
-        Correo correo = new Correo(remitente, destinatario, asunto, contenido);
+        Correo correo = new Correo(remitente, destinatario, asunto, contenido, timestamp);
 
         // Guardar el correo en la base de datos
         correosRef.push().setValue(correo)
@@ -100,7 +105,12 @@ public class PantallaCorreo extends AppCompatActivity {
                         Toast.makeText(PantallaCorreo.this, "Error al enviar el correo", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+
     }
+
+
+
 
     // Método para cancelar el correo y volver a la pantalla de mensajes
     private void cancelarCorreo() {

@@ -119,6 +119,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardviewRecibido"
                     android:layout_width="125dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
@@ -151,6 +152,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewEnviados"
                     android:layout_width="125dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
@@ -160,6 +162,7 @@
                     app:cardCornerRadius="10dp">
 
                     <LinearLayout
+                        android:id="@+id/layoutEnviados"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -218,12 +221,13 @@
             <ListView
                 android:id="@+id/listviewmensajes"
                 android:layout_width="150dp"
-                android:layout_height="548dp"
+                android:layout_height="0dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="10dp" />
+
 
 
         </LinearLayout>
