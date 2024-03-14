@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,58 +22,78 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PantallaEventos extends AppCompatActivity {
-    private ImageView email;
-    private ImageView news;
-    private ImageView event;
-    private ImageView profile;
-    private String emailUser;
+    private ImageView email, news, event, profile;
+    private String emailUser, keyUsuario;
     private DatabaseReference dr;
-    private List<String> hijos;
     private Spinner selecHijo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_eventos);
 
-
         emailUser = getIntent().getStringExtra("emailUser");
         dr = FirebaseDatabase.getInstance().getReference();
 
+        email = findViewById(R.id.goEmail);
         news = findViewById(R.id.goNews);
         event = findViewById(R.id.goEvent);
         profile = findViewById(R.id.goProfile);
-        email = findViewById(R.id.goEmail);
-
-        hijos = new ArrayList<>();
         selecHijo = findViewById(R.id.spinnerSelectHijos);
 
-        //Una vez que se entra en la página se utiliza el emailUser para encontrar el usuario y
-        //hacer una lista de los nombres de su hijo
-        dr.orderByChild("email").equalTo(emailUser).addListenerForSingleValueEvent(new ValueEventListener() {
+        cargarHijos();
+        configurarAccionesBarraInferior();
+    }
+
+
+    /*
+    * CargarHijos() [Usuarios]
+    *
+    * Es un método que nos permite realizar una recopilación de todos los hijos del usuario iniciado
+    * Este nos permite crear una lista con estos hijos y crear una Sipinner con ellos
+    * */
+    private void cargarHijos() {
+        //Realizamos una busqueda desde usuarios, para encontrar al usuario al cual le pertenece
+        //el email (transeferido por el intent)
+        dr.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot usuarioSnapshot : snapshot.getChildren()) {
-                    // Verificar si el usuario tiene hijos
-                    if (usuarioSnapshot.hasChild("hijos")) {
-                        // Obtener la referencia a los hijos
-                        DatabaseReference hijosRef = usuarioSnapshot.child("hijos").getRef();
-                        // Escuchar los cambios en los hijos
+                //Con un bucle for each, miraremos en cada uno de los snapshots
+                for (DataSnapshot usuarioSnapshot : snapshot.getChildren()){
+                    //Guardaremos su key e email
+                    String usuarioKey = usuarioSnapshot.getKey();
+                    String emailUsuario = usuarioSnapshot.child("email").getValue(String.class);
+
+                    //En el caso de que los correos sean iguales
+                    if (emailUsuario.equals(emailUser)&& !emailUsuario.isEmpty())  {
+
+                        //Se guardará la llave para utilizarlo para llegar al usuario directamente y entrar en los nodos hijo
+                        keyUsuario = usuarioKey;
+                        DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference().child("usuarios").child(keyUsuario).child("hijos");
+
                         hijosRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                // Iterar sobre los hijos y obtener sus datos
-                                for (DataSnapshot hijoSnapshot : dataSnapshot.getChildren()) {
-                                    String nombreHijo = hijoSnapshot.child("nombre").getValue(String.class);
-                                    String apellidosHijo = hijoSnapshot.child("apellidos").getValue(String.class);
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                                    String nombreCompleto = nombreHijo+" "+apellidosHijo;
-                                    hijos.add(nombreCompleto);
+                                //Una vez dentro del nodo hijos en el que estamos interesados, los iremos guardando con la ayuda de un for each y un List de Strings
+                                List<String> hijos = new ArrayList<>();
+                                for (DataSnapshot hijoSnapshot : snapshot.getChildren()){
+                                    //Obtenemos los datos del hijo y los guardamos en la lista
+                                    String nombre = hijoSnapshot.child("nombre").getValue(String.class);
+                                    String apellidos = hijoSnapshot.child("apellidos").getValue(String.class);
+
+                                    hijos.add(nombre+" "+apellidos);
                                 }
+
+                                //Creamos el Spinner finalmente
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(PantallaEventos.this, android.R.layout.simple_spinner_item, hijos);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                selecHijo.setAdapter(adapter);
+
                             }
-
                             @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(PantallaEventos.this, "Error, contacte con el servicio técnico", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -81,62 +103,23 @@ public class PantallaEventos extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+
             }
         });
-
-        //Creamos el Spinner con los hijos (En el caso de que no haya no habrá hijos)
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, hijos);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        selecHijo.setAdapter(adapter);
-
-
-        //Con esta lista haremos un spinner el cual dependiendo del hijo seleccionado la lista de
-        //eventos cambia
-
-
-        /*
-        *                           [Acciones de la barra inferior]
-        * Asignamos onClick listeners en las distintas imagenas para que nos lleven a sus destinos
-        * indicados
-        * */
-        news.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PantallaEventos.this, PantallaEventos.class);
-                intent.putExtra("emailUser",emailUser);
-                startActivity(intent);
-            }
-        });
-        event.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PantallaEventos.this, PantallaEventos.class);
-                intent.putExtra("emailUser",emailUser);
-                startActivity(intent);
-            }
-        });
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PantallaEventos.this, PantallaPerfil.class);
-                intent.putExtra("emailUser",emailUser);
-                startActivity(intent);
-            }
-        });
-        email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PantallaEventos.this, PantallaMensajes.class);
-                intent.putExtra("emailUser",emailUser);
-                startActivity(intent);
-            }
-        });
-        //Fin de Acciones de la barra inferior
-
-
-
-
     }
 
+    //Método que nos serrivrá para asignar a cada uno de los iconos un Intent con el método NagateTo y la clase a la que van [Sujeto a cambios]
+    private void configurarAccionesBarraInferior() {
+        news.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+        event.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+        profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
+        email.setOnClickListener(v -> navigateTo(PantallaMensajes.class));
+    }
 
+    //Método complementario de configurarAccionesBarraInferior() el cual realizar el Intent y envía el emailUser [Sujeto a cambios]
+    private void navigateTo(Class<?> destination) {
+        Intent intent = new Intent(PantallaEventos.this, destination);
+        intent.putExtra("emailUser", emailUser);
+        startActivity(intent);
+    }
 }
