@@ -64,12 +64,12 @@ public class PantallaPerfil extends AppCompatActivity {
 
 
         //Obtenemos la key del usuario logeado
-        //keyUser();
+        keyUser();
 
         //Recibimos los datos del intent
         userEmail = getIntent().getStringExtra("emailUser");
 
-        Log.d("perfil", userEmail);
+        //Log.d("perfil", userEmail);
 
         //ordenamos por email de usuarios y comparamos si hay igualdad para extraer sus datos
         usuarioRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -98,16 +98,13 @@ public class PantallaPerfil extends AppCompatActivity {
             }
         });
 
-        /**  Prueba de Samuel guardar hijos en listview
+        //Prueba de Samuel guardar hijos en listview
 
-        //Mostramos en la list view la lista de hijos que tenemos
-        guardarHijos();
-
+        /*
         //Le pasamos los datos al adpter
         CrearHijoAdapter adapater = new CrearHijoAdapter(this,hijos);
 
         listaHijos.setAdapter(adapater);
-
         */
 
     }
@@ -118,9 +115,11 @@ public class PantallaPerfil extends AppCompatActivity {
     public void keyUser(){
         Log.d("pantallaPerfil", "entra en keyuser");
         usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                Log.d("pantallaPerfil", "antes del for");
                 //Recorremos todos los usuarios que teiene la base de datos
                 for (DataSnapshot usuarioSnapshot : snapshot.getChildren()){
                     Log.d("pantallaPerfil", "entra en el for");
@@ -136,8 +135,42 @@ public class PantallaPerfil extends AppCompatActivity {
 
                         keyUsuario = usuarioKey;
 
-                        Log.d("pantallaPerfil", keyUsuario);
-                        Log.d("pantallaPerfil", usuarioKey);
+                        //Apuntamos referencia a los hijos del usuario logeado a través de la key
+                        DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference().child("usuarios").child(keyUsuario).child("hijos");
+
+                        Log.d("pantallaPerfil", "apunta a la referencia");
+
+                        hijosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                //Iteramos sobre los hijos
+                                for (DataSnapshot hijoSnapshot : snapshot.getChildren()){
+
+                                    //Obtenemos los datos del hijo
+                                    String nombre = hijoSnapshot.child("nombre").getValue(String.class);
+                                    String apellidos = hijoSnapshot.child("apellidos").getValue(String.class);
+                                    String curso = hijoSnapshot.child("curso").getValue(String.class);
+                                    String edad = hijoSnapshot.child("edad").getValue(String.class);
+
+                                    //Creamos el objeto del hijo con los datos obtenidos y lo añadimos al arraylist
+                                    Hijo hijo = new Hijo(nombre, apellidos, edad, curso);
+                                    hijos.add(hijo);
+
+                                    //Le pasamos los datos al adpter
+                                    CrearHijoAdapter adapater = new CrearHijoAdapter(PantallaPerfil.this,hijos);
+
+                                    listaHijos.setAdapter(adapater);
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
 
 

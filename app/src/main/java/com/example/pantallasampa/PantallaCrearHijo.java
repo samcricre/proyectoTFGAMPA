@@ -91,10 +91,7 @@ public class PantallaCrearHijo extends AppCompatActivity {
         });
 
 
-        //le damos valor a las variables
-        nombreHijo = nombre.getText().toString();
-        apellidosHijo = apellidos.getText().toString();
-        edadHijo = edad.getText().toString();
+
 
 
 
@@ -107,7 +104,18 @@ public class PantallaCrearHijo extends AppCompatActivity {
     //Metodo por el que guardamos el objeto en la base de datos
     public void crearHijo (View view){
 
+        //le damos valor a las variables
+        nombreHijo = nombre.getText().toString();
+        apellidosHijo = apellidos.getText().toString();
+        edadHijo = edad.getText().toString();
+
+        Log.d("objetohijo", nombreHijo);
+        Log.d("objetohijo", apellidosHijo);
+        Log.d("objetohijo", edadHijo);
+
         Hijo hijo = new Hijo(nombreHijo,apellidosHijo,edadHijo,cursoHijo);
+
+
 
         //Viajamos hasta el nodo hijos y generamos una key como valor de identidad del nuevo objeto que vamos a metter
         //EN caso de que el nodo hijos no exista relatime lo creará automaticamnete

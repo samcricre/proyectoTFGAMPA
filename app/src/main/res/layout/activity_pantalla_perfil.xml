@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="#FFFFFF"
     android:onClick="navCorreos"
+    android:scrollbars="vertical"
     tools:context=".PantallaPerfil">
 
     <androidx.cardview.widget.CardView
@@ -272,9 +273,12 @@
             <ListView
                 android:id="@+id/listViewHijos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="320dp"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:isScrollContainer="true"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollbars="vertical">
 
             </ListView>
 
