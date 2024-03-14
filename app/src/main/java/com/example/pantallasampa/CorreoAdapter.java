@@ -20,25 +20,25 @@ public class CorreoAdapter extends ArrayAdapter<Correo> {
         mCorreos = correos;
     }
 
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        View listItem = convertView;
-//        if (listItem == null) {
-//            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_correo, parent, false);
-//        }
-//
-//        Correo currentCorreo = mCorreos.get(position);
-//
-//        TextView remitenteTextView = listItem.findViewById(R.id.remitenteTextView);
-//        remitenteTextView.setText(currentCorreo.getRemitente());
-//
-//        TextView asuntoTextView = listItem.findViewById(R.id.asuntoTextView);
-//        asuntoTextView.setText(currentCorreo.getAsunto());
-//
-//        TextView contenidoTextView = listItem.findViewById(R.id.contenidoTextView);
-//        contenidoTextView.setText(currentCorreo.getContenido());
-//
-//        return listItem;
-//    }
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View listItem = convertView;
+        if (listItem == null) {
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item_listview_correo, parent, false);
+        }
+
+        Correo currentCorreo = mCorreos.get(position);
+
+        TextView remitenteTextView = listItem.findViewById(R.id.remitenteTextView);
+        remitenteTextView.setText(currentCorreo.getRemitente());
+
+        TextView asuntoTextView = listItem.findViewById(R.id.asuntoTextView);
+        asuntoTextView.setText(currentCorreo.getAsunto());
+
+        TextView contenidoTextView = listItem.findViewById(R.id.contenidoTextView);
+        contenidoTextView.setText(currentCorreo.getContenido());
+
+        return listItem;
+    }
 }
 

@@ -93,4 +93,13 @@ public class PantallaPerfil extends AppCompatActivity {
 
     }
 
+
+    //Metodo para navegar a pagina correos
+    public void navCorreos (View view){
+
+        Intent intent = new Intent(this, PantallaMensajes.class);
+        startActivity(intent);
+
+    }
+
 }

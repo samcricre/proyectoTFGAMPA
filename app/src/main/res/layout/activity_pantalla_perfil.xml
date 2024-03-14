@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="#FFFFFF"
+    android:onClick="navCorreos"
     tools:context=".PantallaPerfil">
 
     <androidx.cardview.widget.CardView
@@ -14,7 +15,7 @@
         app:cardBackgroundColor="#003E77"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,6 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="navCorreos"
                 app:srcCompat="@drawable/icono_correonav" />
 
             <ImageView
@@ -189,7 +191,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="15dp"
                 android:backgroundTint="#003E77"
-                app:cardCornerRadius="15dp" >
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

@@ -216,10 +216,15 @@
             </LinearLayout>
 
             <ListView
-                android:id="@+id/listViewMensajes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp" />
+                android:id="@+id/listviewmensajes"
+                android:layout_width="150dp"
+                android:layout_height="548dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10dp" />
+
 
         </LinearLayout>
     </LinearLayout>

@@ -32,7 +32,7 @@ public class PantallaMensajes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_correo);
 
-        listViewCorreos = findViewById(R.id.listViewMensajes);
+        listViewCorreos = findViewById(R.id.listviewmensajes);
         listaCorreos = new ArrayList<>();
         correosRef = FirebaseDatabase.getInstance().getReference().child("correos");
 
@@ -54,7 +54,7 @@ public class PantallaMensajes extends AppCompatActivity {
                 if (listaCorreos.isEmpty()) {
                     Toast.makeText(PantallaMensajes.this, "No tiene correos disponibles", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Crear un adaptador personalizado y establecerlo en el ListView
+                    // Adaptador del listView
                     CorreoAdapter adapter = new CorreoAdapter(PantallaMensajes.this, listaCorreos);
                     listViewCorreos.setAdapter(adapter);
                 }
