@@ -22,7 +22,7 @@
             android:padding="10dp">
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/backButtonCorreo"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:srcCompat="@drawable/icono_flecha" />
@@ -39,11 +39,10 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/asuntoLectura"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Concepto"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -66,15 +65,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="31dp"
                     android:layout_weight="1"
-                    android:text="Correo de Origen"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TextView"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/emisor"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -93,11 +107,10 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/textView38"
+                        android:id="@+id/remitente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text="Correo de destino"
                         android:textColor="#737373"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -106,12 +119,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView39"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/mensaje"
+            android:layout_width="375dp"
+            android:layout_height="372dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="15dp"
-            android:text="Mensaje" />
+            android:layout_marginVertical="15dp" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
