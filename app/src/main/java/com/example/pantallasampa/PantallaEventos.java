@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -25,6 +26,7 @@ public class PantallaEventos extends AppCompatActivity {
     private String emailUser, keyUsuario;
     private DatabaseReference dr;
     private Spinner selecHijo;
+    private Usuario user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +42,64 @@ public class PantallaEventos extends AppCompatActivity {
         profile = findViewById(R.id.goProfile);
         selecHijo = findViewById(R.id.spinnerSelectHijos);
 
-        cargarHijos();
-        configurarAccionesBarraInferior();
+        comprobarRoll();
     }
+
+    public void comprobarRoll(){
+        dr.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot usuarioSnapshot : snapshot.getChildren()){
+
+                    //Log.d("Usuario",user.getRoll());
+                    String usuarioKey = usuarioSnapshot.getKey();
+                    String emailUsuario = usuarioSnapshot.child("email").getValue(String.class);
+
+                    //En el caso de que los correos sean iguales
+                    if (emailUsuario.equals(emailUser) && !emailUsuario.isEmpty()) {
+                        user = usuarioSnapshot.getValue(Usuario.class);
+                        keyUsuario = usuarioKey;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //Dependiendo de su roll se tendrá una funciónalidad distinta
+        if(user.getRoll().equals("usuario")){
+            cargarHijos();
+            configurarAccionesBarraInferior();//Por si el navigate es distinto [si no lo cambio de vuelta]
+        }
+        else{
+            cargarCursos();
+            configurarAccionesBarraInferior();
+        }
+
+    }
+
+    /*
+    * CargarCursos() [Admin]
+    *
+    * En el caso del admin podrán selecciona un curso. El cual le enseñará los eventos creados para
+    * el curso seleccionado
+    * */
+    private void cargarCursos(){
+        String [] cursos = {"1ºA", "1ºB", "1ºC","2ºA", "2ºB", "2ºC","3ºA", "3ºB", "3ºC","4ºA", "4ºB", "4ºC","5ºA", "5ºB", "5ºC","6ºA", "6ºB", "6ºC",};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(PantallaEventos.this, android.R.layout.simple_spinner_item, cursos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selecHijo.setAdapter(adapter);
+    }
+
 
 
     /*
     * CargarHijos() [Usuarios]
     *
+    * En el caso de los usuarios/socios/familias
     * Es un método que nos permite realizar una recopilación de todos los hijos del usuario iniciado
     * Este nos permite crear una lista con estos hijos y crear una Sipinner con ellos
     * */
@@ -57,46 +109,33 @@ public class PantallaEventos extends AppCompatActivity {
         dr.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Con un bucle for each, miraremos en cada uno de los snapshots
-                for (DataSnapshot usuarioSnapshot : snapshot.getChildren()){
-                    //Guardaremos su key e email
-                    String usuarioKey = usuarioSnapshot.getKey();
-                    String emailUsuario = usuarioSnapshot.child("email").getValue(String.class);
 
-                    //En el caso de que los correos sean iguales
-                    if (emailUsuario.equals(emailUser) && !emailUsuario.isEmpty())  {
+                DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference().child("usuarios").child(keyUsuario).child("hijos");
+                hijosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        //Se guardará la llave para utilizarlo para llegar al usuario directamente y entrar en los nodos hijo
-                        keyUsuario = usuarioKey;
-                        DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference().child("usuarios").child(keyUsuario).child("hijos");
+                        //Una vez dentro del nodo hijos en el que estamos interesados, los iremos guardando con la ayuda de un for each y un List de Strings
+                        List<String> hijos = new ArrayList<>();
+                        for (DataSnapshot hijoSnapshot : snapshot.getChildren()){
+                            //Obtenemos los datos del hijo y los guardamos en la lista
+                            String nombre = hijoSnapshot.child("nombre").getValue(String.class);
+                            String apellidos = hijoSnapshot.child("apellidos").getValue(String.class);
 
-                        hijosRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            hijos.add(nombre+" "+apellidos);
+                        }
 
-                                //Una vez dentro del nodo hijos en el que estamos interesados, los iremos guardando con la ayuda de un for each y un List de Strings
-                                List<String> hijos = new ArrayList<>();
-                                for (DataSnapshot hijoSnapshot : snapshot.getChildren()){
-                                    //Obtenemos los datos del hijo y los guardamos en la lista
-                                    String nombre = hijoSnapshot.child("nombre").getValue(String.class);
-                                    String apellidos = hijoSnapshot.child("apellidos").getValue(String.class);
+                        //Creamos el Spinner finalmente
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(PantallaEventos.this, android.R.layout.simple_spinner_item, hijos);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        selecHijo.setAdapter(adapter);
 
-                                    hijos.add(nombre+" "+apellidos);
-                                }
-
-                                //Creamos el Spinner finalmente
-                                ArrayAdapter<String> adapter = new ArrayAdapter<>(PantallaEventos.this, android.R.layout.simple_spinner_item, hijos);
-                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                selecHijo.setAdapter(adapter);
-
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Toast.makeText(PantallaEventos.this, "Error, contacte con el servicio técnico", Toast.LENGTH_SHORT).show();
-                            }
-                        });
                     }
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(PantallaEventos.this, "Error, contacte con el servicio técnico", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
@@ -110,7 +149,7 @@ public class PantallaEventos extends AppCompatActivity {
     //Método que nos serrivrá para asignar a cada uno de los iconos un Intent con el método NagateTo y la clase a la que van [Sujeto a cambios]
     private void configurarAccionesBarraInferior() {
         news.setOnClickListener(v -> navigateTo(PantallaEventos.class));
-        event.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
         profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
         email.setOnClickListener(v -> navigateTo(PantallaMensajes.class));
     }

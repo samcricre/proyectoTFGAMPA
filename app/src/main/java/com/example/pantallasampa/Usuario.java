@@ -6,6 +6,7 @@ public class Usuario {
     private String apellidos;
     private String email;
     private String telf;
+    private String roll;
 
     public Usuario(){}
 
@@ -14,7 +15,11 @@ public class Usuario {
         this.apellidos = apellidos;
         this.email = email;
         this.telf = telf;
+        this.roll = "usuario";
     }
+    public String getRoll() {return roll;}
+
+    public void setRoll(String roll) {this.roll = roll;}
 
     public String getNombre() {return nombre;}
 
