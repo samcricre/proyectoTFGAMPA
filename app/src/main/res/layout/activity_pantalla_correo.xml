@@ -32,8 +32,8 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="200dp"
-            android:layout_height="125dp"
+            android:layout_width="163dp"
+            android:layout_height="64dp"
             app:srcCompat="@drawable/icono_correo" />
 
         <androidx.cardview.widget.CardView
@@ -54,9 +54,9 @@
                     android:layout_margin="15dp"
                     android:background="#FFFFFF"
                     android:ems="10"
+                    android:hint="Destinatario"
                     android:inputType="text"
                     android:padding="5dp"
-                    android:text="Destinatario"
                     android:textColor="#808080" />
 
                 <EditText
@@ -66,9 +66,9 @@
                     android:layout_margin="15dp"
                     android:background="#FFFFFF"
                     android:ems="10"
+                    android:hint='Asunto'
                     android:inputType="text"
                     android:padding="5dp"
-                    android:text="Concepto"
                     android:textColor="#808080" />
 
                 <EditText

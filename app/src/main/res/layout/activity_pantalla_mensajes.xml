@@ -21,35 +21,35 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/goHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/icono_homenav" />
 
             <ImageView
-                android:id="@+id/imageView6"
+                android:id="@+id/goEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/icono_correonav" />
 
             <ImageView
-                android:id="@+id/imageView11"
+                android:id="@+id/goEvent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/icono_eventosnav" />
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/goNews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/icono_noticiasnav" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/goProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -119,6 +119,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardviewRecibido"
                     android:layout_width="125dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
@@ -151,6 +152,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewEnviados"
                     android:layout_width="125dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"
@@ -160,6 +162,7 @@
                     app:cardCornerRadius="10dp">
 
                     <LinearLayout
+                        android:id="@+id/layoutEnviados"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -218,12 +221,13 @@
             <ListView
                 android:id="@+id/listviewmensajes"
                 android:layout_width="150dp"
-                android:layout_height="548dp"
+                android:layout_height="0dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="10dp" />
+
 
 
         </LinearLayout>
