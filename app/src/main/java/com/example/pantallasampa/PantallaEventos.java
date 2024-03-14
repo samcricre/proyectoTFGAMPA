@@ -61,6 +61,15 @@ public class PantallaEventos extends AppCompatActivity {
                         keyUsuario = usuarioKey;
                     }
                 }
+                //Dependiendo de su roll se tendrá una funciónalidad distinta
+                if(user.getRoll().equals("usuario") && !user.getRoll().isEmpty()){
+                    cargarHijos();
+                    configurarAccionesBarraInferior();//Por si el navigate es distinto [si no lo cambio de vuelta]
+                }
+                else{
+                    cargarCursos();
+                    configurarAccionesBarraInferior();
+                }
             }
 
             @Override
@@ -69,15 +78,7 @@ public class PantallaEventos extends AppCompatActivity {
             }
         });
 
-        //Dependiendo de su roll se tendrá una funciónalidad distinta
-        if(user.getRoll().equals("usuario")){
-            cargarHijos();
-            configurarAccionesBarraInferior();//Por si el navigate es distinto [si no lo cambio de vuelta]
-        }
-        else{
-            cargarCursos();
-            configurarAccionesBarraInferior();
-        }
+
 
     }
 

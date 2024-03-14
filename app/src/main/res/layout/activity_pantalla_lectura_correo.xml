@@ -33,7 +33,7 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="250dp"
                 android:layout_weight="1"
-                android:src="@tools:sample/avatars"
+                android:src="@android:drawable/ic_popup_sync"
                 app:srcCompat="@drawable/icono_papelera" />
 
         </LinearLayout>
@@ -59,7 +59,7 @@
                 android:id="@+id/imageView21"
                 android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:src="@tools:sample/avatars" />
+                android:src="@android:drawable/ic_menu_gallery" />
 
             <LinearLayout
                 android:layout_width="match_parent"
