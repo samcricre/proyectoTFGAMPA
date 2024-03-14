@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -65,7 +64,7 @@ public class PantallaEventos extends AppCompatActivity {
                     String emailUsuario = usuarioSnapshot.child("email").getValue(String.class);
 
                     //En el caso de que los correos sean iguales
-                    if (emailUsuario.equals(emailUser)&& !emailUsuario.isEmpty())  {
+                    if (emailUsuario.equals(emailUser) && !emailUsuario.isEmpty())  {
 
                         //Se guardará la llave para utilizarlo para llegar al usuario directamente y entrar en los nodos hijo
                         keyUsuario = usuarioKey;
