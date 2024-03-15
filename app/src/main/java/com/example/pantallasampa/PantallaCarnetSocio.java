@@ -3,7 +3,9 @@ package com.example.pantallasampa;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -58,6 +60,13 @@ public class PantallaCarnetSocio extends AppCompatActivity {
             }
         });
 
+    }
+
+    //Metodo navegar pantalla de perfil de vuelta
+    public void navPantallaPerfil(View view){
+
+        Intent intent = new Intent(this,PantallaPerfil.class);
+        startActivity(intent);
 
     }
 }

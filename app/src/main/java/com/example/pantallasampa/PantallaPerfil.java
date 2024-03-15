@@ -70,9 +70,6 @@ public class PantallaPerfil extends AppCompatActivity {
         userEmail = getIntent().getStringExtra("emailUser");
         keyUsuario = getIntent().getStringExtra("keyUsuario");
 
-        Log.d("key", keyUsuario);
-
-        //Log.d("perfil", userEmail);
 
         //ordenamos por email de usuarios y comparamos si hay igualdad para extraer sus datos
         usuarioRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -101,14 +98,6 @@ public class PantallaPerfil extends AppCompatActivity {
             }
         });
 
-        //Prueba de Samuel guardar hijos en listview
-
-        /*
-        //Le pasamos los datos al adpter
-        CrearHijoAdapter adapater = new CrearHijoAdapter(this,hijos);
-
-        listaHijos.setAdapter(adapater);
-        */
 
     }
 
@@ -141,7 +130,6 @@ public class PantallaPerfil extends AppCompatActivity {
                         //Apuntamos referencia a los hijos del usuario logeado a través de la key
                         DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference().child("usuarios").child(keyUsuario).child("hijos");
 
-                        Log.d("pantallaPerfil", "apunta a la referencia");
 
                         hijosRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
@@ -252,7 +240,6 @@ public class PantallaPerfil extends AppCompatActivity {
 
         Intent intent = new Intent(this,PantallaCarnetSocio.class);
         intent.putExtra("keyUsuario",keyUsuario);
-        Log.d("key",keyUsuario);
         startActivity(intent);
 
     }
