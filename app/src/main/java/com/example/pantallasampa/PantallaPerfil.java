@@ -240,6 +240,7 @@ public class PantallaPerfil extends AppCompatActivity {
 
         Intent intent = new Intent(this,PantallaCarnetSocio.class);
         intent.putExtra("keyUsuario",keyUsuario);
+        intent.putExtra("emailUser",userEmail);
         startActivity(intent);
 
     }

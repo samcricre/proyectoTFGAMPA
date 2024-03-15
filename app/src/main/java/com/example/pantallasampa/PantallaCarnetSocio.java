@@ -18,6 +18,7 @@ public class PantallaCarnetSocio extends AppCompatActivity {
 
     //Variable donde guardamos lo recibido por el intetn
     String keyUsuario;
+    String userEmail;
 
     //Variables donde guardar los valores
     String nombre;
@@ -37,6 +38,7 @@ public class PantallaCarnetSocio extends AppCompatActivity {
 
         //Recibimos intent
         keyUsuario = getIntent().getStringExtra("keyUsuario");
+        userEmail = getIntent().getStringExtra("emailUser");
 
         nombreUser = findViewById(R.id.tVNombreUser);
         apellidosUser = findViewById(R.id.tVApellidosUser);
@@ -66,6 +68,8 @@ public class PantallaCarnetSocio extends AppCompatActivity {
     public void navPantallaPerfil(View view){
 
         Intent intent = new Intent(this,PantallaPerfil.class);
+        intent.putExtra("emailUser",userEmail);
+        intent.putExtra("keyUsuario",keyUsuario);
         startActivity(intent);
 
     }
