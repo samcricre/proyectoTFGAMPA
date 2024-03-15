@@ -24,7 +24,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class PantallaCrearEventos extends AppCompatActivity {
 
@@ -149,10 +152,10 @@ public class PantallaCrearEventos extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int diaDeMes) {
                 anioInicio = year;
-                mesInicio = month;
+                mesInicio = month+1;
                 diaInicio = diaDeMes;
 
-                textoFechaInicio.setText(diaInicio+"/"+mesInicio+"/"+anioInicio);
+                textoFechaInicio.setText(convertirFormatoFecha(diaInicio+"/"+mesInicio+"/"+anioInicio));
             }
         },diaInicio,mesInicio,anioInicio);
 
@@ -174,10 +177,10 @@ public class PantallaCrearEventos extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int diaDeMes) {
                 anioFin = year;
-                mesFin = month;
+                mesFin = month+1;
                 diaFin = diaDeMes;
 
-                textoFechaFin.setText(diaFin+"/"+mesFin+"/"+anioFin);
+                textoFechaFin.setText(convertirFormatoFecha(diaFin+"/"+mesFin+"/"+anioFin));
             }
         },diaFin,mesFin,anioFin);
 
@@ -200,7 +203,7 @@ public class PantallaCrearEventos extends AppCompatActivity {
 
                 horaInicio = hora;
                 minutoInicio = minuto;
-                textoHoraInicio.setText(horaInicio+" : "+minutoInicio);
+                textoHoraInicio.setText(convertirFormatoHora(horaInicio+":"+minutoInicio));
             }
         }, horaInicio, minutoInicio,false);
         timePickerDialog.show();
@@ -218,7 +221,7 @@ public class PantallaCrearEventos extends AppCompatActivity {
 
                 horaFin = hora;
                 minFin = minuto;
-                textoHoraFin.setText(horaFin + " : " + minFin);
+                textoHoraFin.setText(convertirFormatoHora(horaFin + ":" + minFin));
             }
         }, horaFin, minFin, false);
         timePickerDialog.show();
@@ -310,5 +313,28 @@ public class PantallaCrearEventos extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(PantallaCrearEventos.this, android.R.layout.simple_spinner_item, cursos);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         selectCurso.setAdapter(adapter);
+    }
+
+    public String convertirFormatoFecha(String fecha) {
+        try {
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("d/M/yyyy");
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("dd/MM/yyyy");
+            Date fechaParseada = formatoEntrada.parse(fecha);
+            return formatoSalida.format(fechaParseada);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public String convertirFormatoHora(String hora) {
+        try {
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("H:m");
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("HH:mm");
+            Date horaParseada = formatoEntrada.parse(hora);
+            return formatoSalida.format(horaParseada);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

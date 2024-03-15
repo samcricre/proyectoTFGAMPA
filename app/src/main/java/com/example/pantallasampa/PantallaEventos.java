@@ -21,7 +21,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PantallaEventos extends AppCompatActivity {
@@ -55,22 +58,29 @@ public class PantallaEventos extends AppCompatActivity {
         selecHijo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 hijoSelected = parent.getItemAtPosition(position).toString();//También es curso seleccionado
+                //Limpiamos las listas
+                list.clear();
+                listaEventos.setAdapter(null);
 
+                //Dependiendo del roll
                 if(esAdmin){
+                    //Esto es debido a que si eres admin, el spinner tiene cursos y no nombres, así que puedo utilizarlo inmediatamente
                     cargarEventPorClase(hijoSelected);
                 }
                 else {
+                    //Cogemos referencia y entramos en el usuario con la key usuario
                     DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference();
                     hijosRef.child("usuarios").child(keyUsuario).child("hijos").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            //Vamos ciendo todos los hijos que hay
                             for (DataSnapshot hijoSnapshot : snapshot.getChildren()){
+                                //Si el hijo, tiene el mismo nombre que el marcado en el spinner
                                 if((hijoSnapshot.child("nombre").getValue(String.class)+" "+hijoSnapshot.child("apellidos").getValue(String.class)).equals(hijoSelected)){
+                                    //Guardamos su clase
                                     String clase = hijoSnapshot.child("curso").getValue(String.class);
                                     cargarEventPorClase(clase);
-
                                     break;
                                 }
                             }
@@ -100,7 +110,7 @@ public class PantallaEventos extends AppCompatActivity {
                 for(DataSnapshot eventoSnapshot : snapshot.getChildren()){
                     count++;
                     if(eventoSnapshot.hasChild("curso")){
-                        if(eventoSnapshot.child("curso").getValue(String.class).equals(clase)){
+                        if(eventoSnapshot.child("curso").getValue(String.class).equals(clase) && !yaHaPasado(eventoSnapshot.child("fechaFin").getValue(String.class),eventoSnapshot.child("horaFin").getValue(String.class))){
                             Evento recop = eventoSnapshot.getValue(Evento.class);
                             list.add(recop);
                             EventAdapter adapter = new EventAdapter(PantallaEventos.this,list);
@@ -225,6 +235,25 @@ public class PantallaEventos extends AppCompatActivity {
         intent.putExtra("emailUser", emailUser);
         intent.putExtra("keyUsuario", keyUsuario);
         startActivity(intent);
+    }
+
+    public static boolean yaHaPasado(String fecha, String hora) {
+        try {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
+
+            Date fechaActual = new Date();
+            Date fechaEvento= formatoFecha.parse(fecha);
+            Date horaEvento = formatoHora.parse(hora);
+
+            Date fechaHoraEvento = new Date(fechaEvento.getTime() + horaEvento.getTime());
+            Date fechaHoraActual = new Date(fechaActual.getTime());
+
+            return fechaHoraEvento.before(fechaHoraActual);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
