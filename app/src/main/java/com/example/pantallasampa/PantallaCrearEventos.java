@@ -267,19 +267,19 @@ public class PantallaCrearEventos extends AppCompatActivity {
 
         //Vemos si la fecha final no es menor que la fecha inicial
         if(anioFin < anioInicio){
-            Toast.makeText(this, "La fecha inicial tiene que ser mayor a la fecha final", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "La fecha final tiene que ser mayor a la fecha inicial", Toast.LENGTH_SHORT).show();
             return false;
         }
         else{
             if (anioFin == anioInicio){
                 if(mesFin < mesInicio){
-                    Toast.makeText(this, "La fecha inicial tiene que ser mayor a la fecha final", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "La fecha final tiene que ser mayor a la fecha inicial", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 else{
                     if(mesFin == mesInicio){
                         if(diaFin < diaInicio){
-                            Toast.makeText(this, "La fecha inicial tiene que ser mayor a la fecha final", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "La fecha final tiene que ser mayor a la fecha inicial", Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     }
@@ -288,12 +288,12 @@ public class PantallaCrearEventos extends AppCompatActivity {
         }
 
         //Comprobamos que la hora inicio sea menor que la hora final si este evento empieza y acaba el mismo día
-        if(horaFin < horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))){
-            Toast.makeText(this, "La hora inicial debe ser mayor a la hora final", Toast.LENGTH_SHORT).show();
+        if(horaFin < horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))&&diaEntero){
+            Toast.makeText(this, "La hora final debe ser mayor a la hora inicial", Toast.LENGTH_SHORT).show();
             return false;
         }
         else{
-            if (horaFin == horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))){
+            if (horaFin == horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))&&diaEntero){
                 if(minFin <= minutoInicio){
                     Toast.makeText(this, "La hora inicial debe ser mayor a la hora final", Toast.LENGTH_SHORT).show();
                     return false;

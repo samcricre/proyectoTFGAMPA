@@ -8,8 +8,10 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,10 +26,13 @@ import java.util.List;
 
 public class PantallaEventos extends AppCompatActivity {
     private ImageView email, news, event, profile;
-    private String emailUser, keyUsuario;
+    private String emailUser, keyUsuario, hijoSelected;
     private DatabaseReference dr;
     private Spinner selecHijo;
     private Usuario user;
+    private boolean esAdmin;
+    private ArrayList<Evento> list = new ArrayList<>();
+    private ListView listaEventos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +48,77 @@ public class PantallaEventos extends AppCompatActivity {
         event = findViewById(R.id.goEvent);
         profile = findViewById(R.id.goProfile);
         selecHijo = findViewById(R.id.spinnerSelectHijos);
+        listaEventos = findViewById(R.id.eventList);
 
         comprobarRoll();
+
+        selecHijo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                hijoSelected = parent.getItemAtPosition(position).toString();//También es curso seleccionado
+
+                if(esAdmin){
+                    cargarEventPorClase(hijoSelected);
+                }
+                else {
+                    DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference();
+                    hijosRef.child("usuarios").child(keyUsuario).child("hijos").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot hijoSnapshot : snapshot.getChildren()){
+                                if((hijoSnapshot.child("nombre").getValue(String.class)+" "+hijoSnapshot.child("apellidos").getValue(String.class)).equals(hijoSelected)){
+                                    String clase = hijoSnapshot.child("curso").getValue(String.class);
+                                    cargarEventPorClase(clase);
+
+                                    break;
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(PantallaEventos.this, "Error, contacte con el servicio técnico", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void cargarEventPorClase(String clase){
+        DatabaseReference edr = FirebaseDatabase.getInstance().getReference();
+        edr.child("eventos").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int count = 0;
+                for(DataSnapshot eventoSnapshot : snapshot.getChildren()){
+                    count++;
+                    if(eventoSnapshot.hasChild("curso")){
+                        if(eventoSnapshot.child("curso").getValue(String.class).equals(clase)){
+                            Evento recop = eventoSnapshot.getValue(Evento.class);
+                            list.add(recop);
+                            EventAdapter adapter = new EventAdapter(PantallaEventos.this,list);
+                            listaEventos.setAdapter(adapter);
+                        }
+                    }
+
+                }
+                if(count == 0){
+                    Toast.makeText(PantallaEventos.this, "No se han encontrado eventos asignados", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void comprobarRoll(){
@@ -67,10 +141,12 @@ public class PantallaEventos extends AppCompatActivity {
                 if(user.getRoll().equals("usuario") && !user.getRoll().isEmpty()){
                     cargarHijos();
                     configurarAccionesBarraInferior();//Por si el navigate es distinto [si no lo cambio de vuelta]
+                    esAdmin = false;
                 }
                 else{
                     cargarCursos();
                     configurarAccionesBarraInferior();
+                    esAdmin = true;
                 }
             }
 
@@ -107,44 +183,30 @@ public class PantallaEventos extends AppCompatActivity {
     * Este nos permite crear una lista con estos hijos y crear una Sipinner con ellos
     * */
     private void cargarHijos() {
-        //Realizamos una busqueda desde usuarios, para encontrar al usuario al cual le pertenece
-        //el email (transeferido por el intent)
-        dr.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference();
+        hijosRef.child("usuarios").child(keyUsuario).child("hijos").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                DatabaseReference hijosRef = FirebaseDatabase.getInstance().getReference().child("usuarios").child(keyUsuario).child("hijos");
-                hijosRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Una vez dentro del nodo hijos en el que estamos interesados, los iremos guardando con la ayuda de un for each y un List de Strings
+                List<String> hijos = new ArrayList<>();
+                for (DataSnapshot hijoSnapshot : snapshot.getChildren()){
+                    //Obtenemos los datos del hijo y los guardamos en la lista
+                    String nombre = hijoSnapshot.child("nombre").getValue(String.class);
+                    String apellidos = hijoSnapshot.child("apellidos").getValue(String.class);
 
-                        //Una vez dentro del nodo hijos en el que estamos interesados, los iremos guardando con la ayuda de un for each y un List de Strings
-                        List<String> hijos = new ArrayList<>();
-                        for (DataSnapshot hijoSnapshot : snapshot.getChildren()){
-                            //Obtenemos los datos del hijo y los guardamos en la lista
-                            String nombre = hijoSnapshot.child("nombre").getValue(String.class);
-                            String apellidos = hijoSnapshot.child("apellidos").getValue(String.class);
+                    hijos.add(nombre+" "+apellidos);
+                }
 
-                            hijos.add(nombre+" "+apellidos);
-                        }
+                //Creamos el Spinner finalmente
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(PantallaEventos.this, android.R.layout.simple_spinner_item, hijos);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                selecHijo.setAdapter(adapter);
 
-                        //Creamos el Spinner finalmente
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(PantallaEventos.this, android.R.layout.simple_spinner_item, hijos);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        selecHijo.setAdapter(adapter);
-
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(PantallaEventos.this, "Error, contacte con el servicio técnico", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-
+                Toast.makeText(PantallaEventos.this, "Error, contacte con el servicio técnico", Toast.LENGTH_SHORT).show();
             }
         });
     }

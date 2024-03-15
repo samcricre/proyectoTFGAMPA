@@ -8,7 +8,7 @@ public class Evento {
     private String fechaFin;
     private String horaIni;
     private String horaFin;
-    private String clase;
+    private String curso;
 
     public Evento(String titulo, String descripcion, String clase, String fechaIni, String fechaFin, String horaIni, String horaFin) {
         this.titulo = titulo;
@@ -17,14 +17,14 @@ public class Evento {
         this.fechaFin = fechaFin;
         this.horaIni = horaIni;
         this.horaFin = horaFin;
-        this.clase = clase;
+        this.curso = clase;
     }
     public Evento(String titulo, String descripcion, String clase, String fechaIni, String fechaFin) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fechaIni = fechaIni;
         this.fechaFin = fechaFin;
-        this.clase = clase;
+        this.curso = clase;
     }
     public Evento(){}
 
@@ -52,8 +52,8 @@ public class Evento {
 
     public void setHoraFin(String horaFin) {this.horaFin = horaFin;}
 
-    public String getClase() {return clase;}
+    public String getCurso() {return curso;}
 
-    public void setClase(String clase) {this.clase = clase;}
+    public void setCurso(String curso) {this.curso = curso;}
 }
 
