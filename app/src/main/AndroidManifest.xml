@@ -16,9 +16,6 @@
             android:name=".PantallaCarnetSocio"
             android:exported="false" />
         <activity
-            android:name=".PantallaCrearNoticias"
-            android:exported="false" />
-        <activity
             android:name=".PantallaCrearNoticia"
             android:exported="false" />
         <activity
@@ -38,9 +35,6 @@
             android:exported="false" />
         <activity
             android:name=".PantallaMensajes"
-            android:exported="false" />
-        <activity
-            android:name=".PantallaComunicacion"
             android:exported="false" />
         <activity
             android:name=".PantallaPerfil"

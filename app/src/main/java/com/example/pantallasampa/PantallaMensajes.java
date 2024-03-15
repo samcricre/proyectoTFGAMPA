@@ -98,7 +98,7 @@ public class PantallaMensajes extends AppCompatActivity {
         cardViewBorrados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarCorreos(listaCorreosEliminadosDestinatario);
+                cargarCorreosEliminados(); // Cargar los correos eliminados al hacer clic en "Borrados"
                 modo.setText("Correos Eliminados");
             }
         });
@@ -169,10 +169,58 @@ public class PantallaMensajes extends AppCompatActivity {
         });
     }
 
+    private void cargarCorreosEliminados() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String correoUsuarioActual = currentUser.getEmail();
+
+        // Dependiendo del contexto, cargar los correos eliminados del remitente o del destinatario
+        if (modo.getText().toString().equals("Correos Eliminados")) {
+            Query query = correosRef.orderByChild("destinatario").equalTo(correoUsuarioActual);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listaCorreos.clear();
+                    listaCorreosEliminadosDestinatario.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Correo correo = snapshot.getValue(Correo.class);
+                        if (correo.isEliminadoRemitente() && correo.getDestinatario().equals(correoUsuarioActual)) {
+                            listaCorreosEliminadosDestinatario.add(correo);
+                        }
+                    }
+                    mostrarCorreos(listaCorreosEliminadosDestinatario);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(PantallaMensajes.this, "Error al leer los correos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Query query = correosRef.orderByChild("remitente").equalTo(correoUsuarioActual);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    listaCorreos.clear();
+                    listaCorreosEliminadosRemitente.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Correo correo = snapshot.getValue(Correo.class);
+                        if (correo.isEliminado() && correo.getRemitente().equals(correoUsuarioActual)) {
+                            listaCorreosEliminadosRemitente.add(correo);
+                        }
+                    }
+                    mostrarCorreos(listaCorreosEliminadosRemitente);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(PantallaMensajes.this, "Error al leer los correos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     public void redactarCorreo(View view) {
         Intent intent = new Intent(this, PantallaCorreo.class);
         startActivity(intent);
     }
 }
-
-

@@ -32,16 +32,16 @@ public class CorreoAdapter extends ArrayAdapter<Correo> {
 
         final Correo currentCorreo = mCorreos.get(position);
 
-        TextView remitenteTextView = listItem.findViewById(R.id.remitenteTextView);
+        TextView remitenteTextView = listItem.findViewById(R.id.tVRemitente);
         remitenteTextView.setText(currentCorreo.getRemitente());
 
-        TextView asuntoTextView = listItem.findViewById(R.id.asuntoTextView);
+        TextView asuntoTextView = listItem.findViewById(R.id.tVAsunto);
         asuntoTextView.setText(currentCorreo.getAsunto());
 
-        TextView contenidoTextView = listItem.findViewById(R.id.contenidoTextView);
+        TextView contenidoTextView = listItem.findViewById(R.id.tVContenido);
         contenidoTextView.setText(currentCorreo.getContenido());
 
-        TextView fechaTextView = listItem.findViewById(R.id.fechaTextView);
+        TextView fechaTextView = listItem.findViewById(R.id.tVFecha);
         fechaTextView.setText(formatFecha(currentCorreo.getTimestamp()));
 
         // Agregar un OnClickListener al listItem
