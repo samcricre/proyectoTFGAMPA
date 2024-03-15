@@ -6,9 +6,28 @@
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/remitenteLabelTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Remitente:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
         android:id="@+id/remitenteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/asuntoLabelTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Asunto:"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -19,6 +38,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/contenidoLabelTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contenido:"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:textColor="@color/black"
         android:layout_marginBottom="4dp"/>
 
@@ -39,4 +68,3 @@
         android:gravity="end"/>
 
 </LinearLayout>
-

@@ -54,6 +54,7 @@ public class CorreoAdapter extends ArrayAdapter<Correo> {
                 intent.putExtra("destinatario", currentCorreo.getDestinatario());
                 intent.putExtra("asunto", currentCorreo.getAsunto());
                 intent.putExtra("contenido", currentCorreo.getContenido());
+                intent.putExtra("correoId", currentCorreo.getCorreoId()); // Pasar la clave del correo
                 mContext.startActivity(intent);
             }
         });

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,9 +27,13 @@ public class PantallaMensajes extends AppCompatActivity {
 
     private ListView listViewCorreos;
     private List<Correo> listaCorreos;
+    private List<Correo> listaCorreosEliminadosRemitente;
+    private List<Correo> listaCorreosEliminadosDestinatario;
     private DatabaseReference correosRef;
     private CardView cardViewEnviados;
     private CardView cardViewRecibidos;
+    private CardView cardViewBorrados;
+    private TextView modo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,11 @@ public class PantallaMensajes extends AppCompatActivity {
 
         listViewCorreos = findViewById(R.id.listviewmensajes);
         listaCorreos = new ArrayList<>();
+        listaCorreosEliminadosRemitente = new ArrayList<>();
+        listaCorreosEliminadosDestinatario = new ArrayList<>();
         correosRef = FirebaseDatabase.getInstance().getReference().child("correos");
+        modo = findViewById(R.id.estadoMensaje);
+        modo.setText("Correos Recibidos");
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String correoUsuarioActual = currentUser.getEmail();
@@ -48,16 +57,16 @@ public class PantallaMensajes extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaCorreos.clear();
+                listaCorreosEliminadosDestinatario.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Correo correo = snapshot.getValue(Correo.class);
-                    listaCorreos.add(correo);
+                    if (!correo.isEliminadoRemitente()) {
+                        listaCorreos.add(correo);
+                    } else if (correo.isEliminado() && correo.getDestinatario().equals(correoUsuarioActual)) {
+                        listaCorreosEliminadosDestinatario.add(correo);
+                    }
                 }
-                if (listaCorreos.isEmpty()) {
-                    Toast.makeText(PantallaMensajes.this, "No tiene correos disponibles", Toast.LENGTH_SHORT).show();
-                } else {
-                    CorreoAdapter adapter = new CorreoAdapter(PantallaMensajes.this, listaCorreos);
-                    listViewCorreos.setAdapter(adapter);
-                }
+                mostrarCorreos(listaCorreos);
             }
 
             @Override
@@ -68,31 +77,42 @@ public class PantallaMensajes extends AppCompatActivity {
 
         cardViewEnviados = findViewById(R.id.cardViewEnviados);
         cardViewRecibidos = findViewById(R.id.cardviewRecibido);
+        cardViewBorrados = findViewById(R.id.cardViewBorrados);
 
-        // Manejar el clic del botón "Correos Enviados"
         cardViewEnviados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cargarCorreosEnviados();
-                // Cambia el color de fondo del CardView
-                cardViewEnviados.setBackgroundColor(getResources().getColor(R.color.color_cardview_alterado));
-                cardViewRecibidos.setBackgroundColor(getResources().getColor(R.color.color_cardview));
+                modo.setText("Correos Enviados");
             }
         });
 
-        // Manejar el clic del botón "Correos Recibidos"
         cardViewRecibidos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cargarCorreosRecibidos();
-                // Cambia el color de fondo del CardView
-                cardViewRecibidos.setBackgroundColor(getResources().getColor(R.color.color_cardview_alterado));
-                cardViewEnviados.setBackgroundColor(getResources().getColor(R.color.color_cardview));
+                modo.setText("Correos Recibidos");
+            }
+        });
+
+        cardViewBorrados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarCorreos(listaCorreosEliminadosDestinatario);
+                modo.setText("Correos Eliminados");
             }
         });
     }
 
-    // Método para cargar los correos enviados por el usuario
+    private void mostrarCorreos(List<Correo> correos) {
+        if (correos.isEmpty()) {
+            Toast.makeText(PantallaMensajes.this, "No tiene correos disponibles", Toast.LENGTH_SHORT).show();
+        } else {
+            CorreoAdapter adapter = new CorreoAdapter(PantallaMensajes.this, correos);
+            listViewCorreos.setAdapter(adapter);
+        }
+    }
+
     private void cargarCorreosEnviados() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String correoUsuarioActual = currentUser.getEmail();
@@ -102,16 +122,16 @@ public class PantallaMensajes extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaCorreos.clear();
+                listaCorreosEliminadosRemitente.clear(); // Limpiar la lista de correos eliminados por el remitente
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Correo correo = snapshot.getValue(Correo.class);
-                    listaCorreos.add(correo);
+                    if (!correo.isEliminado() || correo.isEliminadoRemitente()) { // Incluir correos no eliminados y correos eliminados por el remitente
+                        listaCorreos.add(correo);
+                    } else {
+                        listaCorreosEliminadosRemitente.add(correo); // Agregar a la lista de correos eliminados por el remitente
+                    }
                 }
-                if (listaCorreos.isEmpty()) {
-                    Toast.makeText(PantallaMensajes.this, "No ha enviado correos", Toast.LENGTH_SHORT).show();
-                } else {
-                    CorreoAdapter adapter = new CorreoAdapter(PantallaMensajes.this, listaCorreos);
-                    listViewCorreos.setAdapter(adapter);
-                }
+                mostrarCorreos(listaCorreos);
             }
 
             @Override
@@ -121,7 +141,6 @@ public class PantallaMensajes extends AppCompatActivity {
         });
     }
 
-    // Método para cargar los correos recibidos por el usuario
     private void cargarCorreosRecibidos() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String correoUsuarioActual = currentUser.getEmail();
@@ -131,16 +150,16 @@ public class PantallaMensajes extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaCorreos.clear();
+                listaCorreosEliminadosDestinatario.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Correo correo = snapshot.getValue(Correo.class);
-                    listaCorreos.add(correo);
+                    if (!correo.isEliminadoRemitente()) {
+                        listaCorreos.add(correo);
+                    } else if (correo.isEliminado() && correo.getDestinatario().equals(correoUsuarioActual)) {
+                        listaCorreosEliminadosDestinatario.add(correo);
+                    }
                 }
-                if (listaCorreos.isEmpty()) {
-                    Toast.makeText(PantallaMensajes.this, "No tiene correos disponibles", Toast.LENGTH_SHORT).show();
-                } else {
-                    CorreoAdapter adapter = new CorreoAdapter(PantallaMensajes.this, listaCorreos);
-                    listViewCorreos.setAdapter(adapter);
-                }
+                mostrarCorreos(listaCorreos);
             }
 
             @Override
@@ -155,4 +174,5 @@ public class PantallaMensajes extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
 
