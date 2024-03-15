@@ -68,6 +68,9 @@ public class PantallaPerfil extends AppCompatActivity {
 
         //Recibimos los datos del intent
         userEmail = getIntent().getStringExtra("emailUser");
+        keyUsuario = getIntent().getStringExtra("keyUsuario");
+
+        Log.d("key", keyUsuario);
 
         //Log.d("perfil", userEmail);
 
@@ -240,6 +243,16 @@ public class PantallaPerfil extends AppCompatActivity {
 
         Intent intent = new Intent(this, PantallaCrearHijo.class);
         intent.putExtra("emailUser",userEmail);//Enviamos el email con el que estamos trabajando a la pantalla de crear Hijo
+        startActivity(intent);
+
+    }
+
+
+    public void navCarnetSocio(View view){
+
+        Intent intent = new Intent(this,PantallaCarnetSocio.class);
+        intent.putExtra("keyUsuario",keyUsuario);
+        Log.d("key",keyUsuario);
         startActivity(intent);
 
     }
