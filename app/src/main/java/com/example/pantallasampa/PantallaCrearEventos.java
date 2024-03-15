@@ -10,10 +10,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -26,28 +29,19 @@ import java.util.Calendar;
 public class PantallaCrearEventos extends AppCompatActivity {
 
     //Variables de las pagina
-    CardView btFechaInicio;
-    CardView btFechaFin;
-    CardView btHoraInicio;
-    CardView btHoraFin;
+    private CardView btFechaInicio, btFechaFin, btHoraInicio, btHoraFin;
+    private EditText titulo, descripcion, textoFechaInicio, textoFechaFin, textoHoraInicio, textoHoraFin;
+    private CheckBox duracionTodoDia;
+    private Spinner selectCurso;
+    private String spinnerOptionSelected = new String();//Inicializamos para que no de error
 
-    EditText titulo, descripcion;
-
-    EditText textoFechaInicio, textoFechaFin, textoHoraInicio, textoHoraFin;
-
-    CheckBox duracionTodoDia, vincularGoolge;
 
     //Variables para guardar las fechas
+    private int diaInicio, mesInicio,anioInicio,diaFin,mesFin,anioFin,horaInicio,minutoInicio,horaFin,minFin;
+    private boolean diaEntero = false;
+    private boolean selected = false;
 
-    int diaInicio, mesInicio,anioInicio;
-    int diaFin,mesFin,anioFin;
-
-    int horaInicio,minutoInicio;
-    int horaFin,minFin;
-
-    boolean diaEntero = false;
-
-    DatabaseReference dr;
+    private DatabaseReference dr;
 
 
 
@@ -56,10 +50,7 @@ public class PantallaCrearEventos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_crear_eventos);
 
-
-        Log.d("NuevoEvento", "Entra evento");
-
-
+        //Inicializamos todas las variables
         btFechaInicio = findViewById(R.id.btFechaInicio);
         btFechaFin = findViewById(R.id.btFechaFin);
         btHoraInicio = findViewById(R.id.btHoraInicio);
@@ -72,27 +63,32 @@ public class PantallaCrearEventos extends AppCompatActivity {
         textoHoraFin  = findViewById(R.id.horaFin);
         duracionTodoDia = findViewById(R.id.checkBoxTodoDia);
 
+        //Desabilitamos los fecha y hora para que no se pueda escribir en ellos
+        textoFechaFin.setEnabled(false);
+        textoFechaInicio.setEnabled(false);
+        textoHoraFin.setEnabled(false);
+        textoHoraInicio.setEnabled(false);
+
+        //Creamos el spinner de los cursos
+        selectCurso = findViewById(R.id.cursoSelectCrearEvent);
+        cargarCursos();//cargamos los cursos al Spinner
+
+        //Damos la referencia de la instancia a la variable database reference
         dr = FirebaseDatabase.getInstance().getReference();
 
-
-
-
-
-
+        //En el caso de que se haga click en el chech box
         duracionTodoDia.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                //Aqui agregamos el codigo que deseas ejecutar cuando el estado de la checkbox cambia
+                //En el caso de que se haya realizado el check
                 if(isChecked){
 
-                    //Checkbox está marcado
+                    //Las horas se predefinen para que duren el día o días enteros
                     textoHoraInicio.setText("00:00");
                     textoHoraFin.setText("23:59");
 
-                    // Deshabilita las vistas de hora
-                    textoHoraInicio.setEnabled(false);
-                    textoHoraFin.setEnabled(false);
+                    //Deshabilita las vistas de hora
                     btHoraInicio.setEnabled(false);
                     btHoraFin.setEnabled(false);
 
@@ -102,9 +98,7 @@ public class PantallaCrearEventos extends AppCompatActivity {
                 }else{
 
                     //CheckBox desmarcado
-                    // Si el CheckBox no está marcado, habilita las vistas de hora
-                    textoHoraInicio.setEnabled(true);
-                    textoHoraFin.setEnabled(true);
+                    //Si el CheckBox no está marcado, habilita las vistas de hora
                     btHoraInicio.setEnabled(true);
                     btHoraFin.setEnabled(true);
 
@@ -116,16 +110,34 @@ public class PantallaCrearEventos extends AppCompatActivity {
             }
         });
 
+        //Creamos un listenner en el spinner
+        selectCurso.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Si se ha seleccionado una de las opciones se guarda en esta variable y se señala que ha sido seleccionada
+                spinnerOptionSelected = parent.getItemAtPosition(position).toString();
+                selected = true;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Si no hay ninguno (No hace nada porque no se puede no seleccionar ninguno)
+                selected = false;
+            }
+        });
+
 
     }
 
+    //Si le damos a Cancelar
     public void cancelarCreacionTask (View view){
-
         Intent i = new Intent(this,PantallaEventos.class);
+        i.putExtra("emailUser", getIntent().getStringExtra("emailUser"));
         startActivity(i);
     }
 
-
+    //Si le damos al icono al lado de fecha inicio aparece un date picker del cual se selecciona fecha
+    //Esto pasa en el fecha final también. Aparte están limitados al día de hoy
     public void fechaInicio(View view){
 
         final Calendar calendario = Calendar.getInstance();
@@ -143,6 +155,9 @@ public class PantallaCrearEventos extends AppCompatActivity {
                 textoFechaInicio.setText(diaInicio+"/"+mesInicio+"/"+anioInicio);
             }
         },diaInicio,mesInicio,anioInicio);
+
+        //Limitación de día minimo
+        datePickerDialog.getDatePicker().setMinDate(calendario.getTimeInMillis());
         datePickerDialog.show();
 
     }
@@ -165,10 +180,14 @@ public class PantallaCrearEventos extends AppCompatActivity {
                 textoFechaFin.setText(diaFin+"/"+mesFin+"/"+anioFin);
             }
         },diaFin,mesFin,anioFin);
+
+        datePickerDialog.getDatePicker().setMinDate(calendario.getTimeInMillis());
+
         datePickerDialog.show();
 
     }
 
+    //Similar al datepicker que hemos utilizado en fechas, pero en este caso para las horas
     public void horaInicio(View view){
 
         final Calendar calendario = Calendar.getInstance();
@@ -205,31 +224,91 @@ public class PantallaCrearEventos extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    //Cuando de damos click en guardar
     public void btGuardar(View view){
 
+        //Se almacenan todos los strings de los edittexts
         String fechaInicioTxt = textoFechaInicio.getText().toString();
         String fechaFinTxt = textoFechaFin.getText().toString();
         String horaInicioTxt = textoHoraInicio.getText().toString();
         String horaFinTxt = textoHoraFin.getText().toString();
 
+        //Se crea un nuevo envento
         Evento nuevoEvento;
 
-        if(!diaEntero){
-            nuevoEvento = new Evento(titulo.getText().toString(),descripcion.getText().toString(),"CLASE",fechaInicioTxt,fechaFinTxt,horaInicioTxt,horaFinTxt);
-        }
-        else{
-            nuevoEvento = new Evento(titulo.getText().toString(),descripcion.getText().toString(),"CLASE",fechaInicioTxt,fechaFinTxt);
-        }
+        //Se tiene que pasar la validación
+        if(!validacion(fechaInicioTxt,fechaFinTxt,horaInicioTxt,horaFinTxt))
+            return;
 
+        //Si se valida se crea el nuevo evento
+        nuevoEvento = new Evento(titulo.getText().toString(),descripcion.getText().toString(),spinnerOptionSelected,fechaInicioTxt,fechaFinTxt,horaInicioTxt,horaFinTxt);
+
+
+        //Conseguimos la key de eventos y lo metemos en la bae de datos
         String key = dr.child("eventos").push().getKey();
         dr.child("eventos").child(key).setValue(nuevoEvento).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(PantallaCrearEventos.this, "Evento creado", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PantallaCrearEventos.this, PantallaEventos.class);
+                intent.putExtra("emailUser", getIntent().getStringExtra("emailUser"));
+                startActivity(intent);
             }
         });
+    }
 
+    //Validación de los datos introducidos
+    private boolean validacion(String fechaInicioTxt, String fechaFinTxt, String horaInicioTxt, String horaFinTxt){
+        //Filtro de que ningún campo esté vacío
+        if(titulo.getText().toString().isEmpty() || descripcion.getText().toString().isEmpty() || !selected || fechaFinTxt.isEmpty() || fechaInicioTxt.isEmpty() || horaInicioTxt.isEmpty() || horaFinTxt.isEmpty()){
+            Toast.makeText(this, "Todos los parámetros son necesarios", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
+        //Vemos si la fecha final no es menor que la fecha inicial
+        if(anioFin < anioInicio){
+            Toast.makeText(this, "La fecha inicial tiene que ser mayor a la fecha final", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else{
+            if (anioFin == anioInicio){
+                if(mesFin < mesInicio){
+                    Toast.makeText(this, "La fecha inicial tiene que ser mayor a la fecha final", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                else{
+                    if(mesFin == mesInicio){
+                        if(diaFin < diaInicio){
+                            Toast.makeText(this, "La fecha inicial tiene que ser mayor a la fecha final", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
 
+        //Comprobamos que la hora inicio sea menor que la hora final si este evento empieza y acaba el mismo día
+        if(horaFin < horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))){
+            Toast.makeText(this, "La hora inicial debe ser mayor a la hora final", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else{
+            if (horaFin == horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))){
+                if(minFin <= minutoInicio){
+                    Toast.makeText(this, "La hora inicial debe ser mayor a la hora final", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    //Método que nos sirve para rellevar el Spinner con sus opciones
+    private void cargarCursos(){
+        String [] cursos = {"1ºA", "1ºB", "1ºC","2ºA", "2ºB", "2ºC","3ºA", "3ºB", "3ºC","4ºA", "4ºB", "4ºC","5ºA", "5ºB", "5ºC","6ºA", "6ºB", "6ºC"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(PantallaCrearEventos.this, android.R.layout.simple_spinner_item, cursos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        selectCurso.setAdapter(adapter);
     }
 }
