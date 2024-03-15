@@ -28,7 +28,7 @@
                 app:srcCompat="@drawable/icono_flecha" />
 
             <ImageView
-                android:id="@+id/imageView16"
+                android:id="@+id/deleteButtonCorreo"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="250dp"
@@ -76,7 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="TextView"
+                        android:text="De: "
                         android:textSize="12sp" />
 
                     <TextView
@@ -108,7 +108,7 @@
 
                     <TextView
                         android:id="@+id/remitente"
-                        android:layout_width="wrap_content"
+                        android:layout_width="232dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:textColor="#737373"

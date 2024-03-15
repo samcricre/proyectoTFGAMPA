@@ -61,10 +61,7 @@ public class PantallaCorreo extends AppCompatActivity {
                 cancelarCorreo();
             }
         });
-
-
     }
-
 
     private void enviarCorreo() {
         String destinatario = destinatarioEditText.getText().toString();
@@ -85,10 +82,13 @@ public class PantallaCorreo extends AppCompatActivity {
         long timestamp = System.currentTimeMillis();
 
         // Crear un objeto Correo con los datos ingresados
-        Correo correo = new Correo(remitente, destinatario, asunto, contenido, timestamp);
+        // Establecer los atributos eliminado y eliminadoRemitente como false por defecto
+        Correo correo = new Correo(null, remitente, destinatario, asunto, contenido, timestamp, false, false);
 
         // Guardar el correo en la base de datos
-        correosRef.push().setValue(correo)
+        String correoId = correosRef.push().getKey(); // Obtener el ID único del correo
+        correo.setCorreoId(correoId); // Asignar el correoId al objeto Correo
+        correosRef.child(correoId).setValue(correo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -105,12 +105,7 @@ public class PantallaCorreo extends AppCompatActivity {
                         Toast.makeText(PantallaCorreo.this, "Error al enviar el correo", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
     }
-
-
-
 
     // Método para cancelar el correo y volver a la pantalla de mensajes
     private void cancelarCorreo() {
