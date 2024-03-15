@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,9 @@ public class PantallaLogin extends AppCompatActivity {
     private Button accessButton;
     private TextView irRegister;
     private FirebaseAuth mAuth;
+
+    String keyUsuario;
+    DatabaseReference usuarioRef = FirebaseDatabase.getInstance().getReference().child("usuarios");//Aqui estamos diciendo que apunte a los usuarios
 
     private DatabaseReference dr;
 
@@ -93,11 +97,45 @@ public class PantallaLogin extends AppCompatActivity {
 
                                     String userEmail = user.getEmail();
 
+                                    //Extraemos tambien su key para poder tener acceso rapido desde el resto de paginas
+
+
+                                    usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                            Log.d("pantallaPerfil", "antes del for");
+                                            //Recorremos todos los usuarios que teiene la base de datos
+                                            for (DataSnapshot usuarioSnapshot : snapshot.getChildren()){
+                                                Log.d("pantallaPerfil", "entra en el for");
+
+                                                //Extraemos las key de los usuarios
+                                                String usuarioKey = usuarioSnapshot.getKey();
+                                                Log.d("pantallaPerfil", usuarioKey);
+
+                                                //Ahora debemos verificar que coincide el email logeado con el del usuario, asi podremos coger la key del usuarios que tenemos logueado
+                                                String emailUsuario = usuarioSnapshot.child("email").getValue(String.class);
+
+                                                if (emailUsuario.equals(userEmail))  {
+
+                                                    keyUsuario = usuarioKey;
+
+                                                }
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
 
                                     //Si se consegue, se nos enviará a la siguiente pantalla
                                     //  [El intent debe cambiarse para la versión final]
                                     Intent intent = new Intent(PantallaLogin.this, PantallaEventos.class);
                                     intent.putExtra("emailUser", userEmail);
+                                    intent.putExtra("keyUsuario", keyUsuario);
                                     startActivity(intent);
                                 }
                                 else{

@@ -35,6 +35,7 @@ public class PantallaEventos extends AppCompatActivity {
         setContentView(R.layout.activity_pantalla_eventos);
 
         emailUser = getIntent().getStringExtra("emailUser");
+        keyUsuario = getIntent().getStringExtra("keyUsuario");
         dr = FirebaseDatabase.getInstance().getReference();
 
         email = findViewById(R.id.goEmail);
@@ -160,15 +161,9 @@ public class PantallaEventos extends AppCompatActivity {
     private void navigateTo(Class<?> destination) {
         Intent intent = new Intent(PantallaEventos.this, destination);
         intent.putExtra("emailUser", emailUser);
+        intent.putExtra("keyUsuario", keyUsuario);
         startActivity(intent);
     }
 
-    //Metodo temporal para poder viajar a noticias
-    public void navPantallaNoticias(View view){
 
-        Intent intent = new Intent(this, PantallaNoticias.class);
-        intent.putExtra("emailUser",emailUser);
-        startActivity(intent);
-
-    }
 }

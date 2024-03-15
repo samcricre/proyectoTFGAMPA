@@ -26,7 +26,9 @@ public class PantallaCrearNoticia extends AppCompatActivity {
 
 
     //Apuntamos en la base de datos al nodo notica
-    DatabaseReference dr = FirebaseDatabase.getInstance().getReference().child("noticias");
+    DatabaseReference dr = FirebaseDatabase.getInstance().getReference();
+
+    //Apu
 
 
     @Override
@@ -39,9 +41,6 @@ public class PantallaCrearNoticia extends AppCompatActivity {
         eSubtitulo = findViewById(R.id.subtituloNoticia);
         eCuerpo = findViewById(R.id.cuerpoNoticia);
 
-        titular = eTitular.getText().toString();
-        subtitulo = eSubtitulo.getText().toString();
-        cuerpo = eCuerpo.getText().toString();
 
 
 
@@ -53,12 +52,16 @@ public class PantallaCrearNoticia extends AppCompatActivity {
     //Metodo para publicar la noticia
     public void publicarNoticia(View view){
 
+        titular = eTitular.getText().toString();
+        subtitulo = eSubtitulo.getText().toString();
+        cuerpo = eCuerpo.getText().toString();
+
         //Creamos objeto noticia
         Noticia noticia = new Noticia(titular,subtitulo,cuerpo);
 
         //Sacamos la key que apuntara a la noticia
         String key = dr.child("noticias").push().getKey();
-        dr.child(key).setValue(noticia).addOnSuccessListener(new OnSuccessListener<Void>() {
+        dr.child("noticias").child(key).setValue(noticia).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
 
@@ -73,12 +76,14 @@ public class PantallaCrearNoticia extends AppCompatActivity {
 
 
 
+
     public void cancelarNoticia(View view){
 
         Intent intent =  new Intent(this,PantallaNoticias.class);
         startActivity(intent);
 
     }
+
 
 
 

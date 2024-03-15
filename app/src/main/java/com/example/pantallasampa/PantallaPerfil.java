@@ -190,7 +190,7 @@ public class PantallaPerfil extends AppCompatActivity {
         });
     }
 
-
+    /*
     //Metodo para guardar hijos en arraylist
     public void guardarHijos(){
 
@@ -231,6 +231,8 @@ public class PantallaPerfil extends AppCompatActivity {
 
     }
 
+
+    */
 
 
     //Metodo para navegar a crear hijo
