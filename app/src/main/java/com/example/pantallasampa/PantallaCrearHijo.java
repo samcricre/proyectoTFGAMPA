@@ -138,7 +138,7 @@ public class PantallaCrearHijo extends AppCompatActivity {
                     if (emailUsuario.equals(userEmail))  {
 
                         //Si encontramos la coincidencia de email, crearemos el nodo de hijos bajo su key. Para ello deberemos apuntar donde queremos guardar los datos
-                        String key = dr.child("usuarios").child(usuarioKey).child("hijos").push().getKey();
+                        String key = dr/*.child("usuarios")*/.child(usuarioKey).child("hijos").push().getKey();
 
                         //Le añadimos un valor a esa key pasandole el objeto hijo que hemos creado con los datos recogidos.
                         //Comenzamos la ruta directamente desde la key, ya que al declarar el databse reference le hemos marcado la posicion de usuarios
@@ -149,6 +149,7 @@ public class PantallaCrearHijo extends AppCompatActivity {
                                 //Si es exitoso que nos devuelva de nuevo a la pantalla de peril
                                 Toast.makeText(PantallaCrearHijo.this, "Hijo añadido correctamente", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(PantallaCrearHijo.this, PantallaPerfil.class);
+                                intent.putExtra("emailUser",userEmail);
                                 startActivity(intent);
                             }
                         });

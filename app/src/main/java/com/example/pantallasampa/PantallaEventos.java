@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -149,7 +150,7 @@ public class PantallaEventos extends AppCompatActivity {
 
     //Método que nos serrivrá para asignar a cada uno de los iconos un Intent con el método NagateTo y la clase a la que van [Sujeto a cambios]
     private void configurarAccionesBarraInferior() {
-        news.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+        news.setOnClickListener(v -> navigateTo(PantallaNoticias.class));
         event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
         profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
         email.setOnClickListener(v -> navigateTo(PantallaMensajes.class));
@@ -160,5 +161,14 @@ public class PantallaEventos extends AppCompatActivity {
         Intent intent = new Intent(PantallaEventos.this, destination);
         intent.putExtra("emailUser", emailUser);
         startActivity(intent);
+    }
+
+    //Metodo temporal para poder viajar a noticias
+    public void navPantallaNoticias(View view){
+
+        Intent intent = new Intent(this, PantallaNoticias.class);
+        intent.putExtra("emailUser",emailUser);
+        startActivity(intent);
+
     }
 }
