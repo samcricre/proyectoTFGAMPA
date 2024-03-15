@@ -26,6 +26,7 @@
                 android:id="@+id/imageView22"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:onClick="navPantallaPerfil"
                 app:srcCompat="@drawable/icono_flecha" />
         </LinearLayout>
 
