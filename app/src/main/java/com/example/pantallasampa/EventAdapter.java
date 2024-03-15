@@ -55,6 +55,13 @@ public class EventAdapter extends ArrayAdapter<Evento> {
         TextView eventHoraFin = listItem.findViewById(R.id.horaFin);
         eventHoraFin.setText(event.getHoraFin());
 
+        listItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Ir a la nueva pantalla por detalles
+            }
+        });
+
         return listItem;
     }
 
