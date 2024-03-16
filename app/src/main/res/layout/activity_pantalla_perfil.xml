@@ -145,12 +145,15 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp">
+                android:layout_margin="15dp"
+                app:cardBackgroundColor="#86C5FF"
+                app:cardCornerRadius="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="15dp"
+                    android:background="#FFFFFF"
                     android:orientation="vertical">
 
                     <TextView

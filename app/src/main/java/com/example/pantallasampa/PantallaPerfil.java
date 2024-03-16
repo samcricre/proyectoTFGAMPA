@@ -20,6 +20,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Firebase;
 import com.google.firebase.database.DataSnapshot;
@@ -66,9 +69,10 @@ public class PantallaPerfil extends AppCompatActivity {
     //PieChart - Gráfico de circulo
     PieChart graficoCirculo;
 
-    int contadorH;
-    int contadorF;
-    int contadorTotal;
+    int contadorH = 0;
+    int contadorF = 0;
+    int contadorTotal = 0;
+
 
 
     //Usamos la clave recibida a través deñ intent para acceder a los datos de esa key
@@ -94,6 +98,7 @@ public class PantallaPerfil extends AppCompatActivity {
 
         //Llamada a los metodos de los graficos
         graficoLineal();
+        graficoCirculo();;
 
         //Obtenemos la key del usuario logeado
         keyUser();
@@ -235,13 +240,19 @@ public class PantallaPerfil extends AppCompatActivity {
 
                 //Sacamos el arraylist de la base de datos lo actualizamos con el nuevo numero de usuarios y lo volvemos a guardar con el map
                 dr.child("stats").child("line").child("progresionUsuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    //Al prinicio al ver solo un elemento que es 0 nos devolverá ese mismo elemento y añadiremos ese al arraylist donde iremos añadiendo los nuevos numeros de
+                    //usuarios para asi posteriormente poder guardarlo en el base de datos. La proxima vez que se haga recuenta además de encontrarse el 0 se encontrará ek numero añadido en el anterior recuento
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot listaUser : snapshot.getChildren()){
+                            //Extaremos los valores dentro del nodo
                             Integer valor = listaUser.getValue(Integer.class);
+                            //Los guardamos dentro del arraylist
                             progresionUsuarios.add(valor);
                         }
 
+                        //Añadimos el nuevo numero
                         progresionUsuarios.add(numeroUsuarios);
 
                         //Añadimos al map los datos actualizados
@@ -303,6 +314,92 @@ public class PantallaPerfil extends AppCompatActivity {
 
     //Método piechart
     public void graficoCirculo(){
+
+        //Creamos un Map donde guardaremos los claves vlaor que queremos guardar
+        Map<String,Object> dataMap = new HashMap<>();
+
+        dr.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot snapshotUser : snapshot.getChildren()){
+
+                   //Acceder a los hijos de cada usuario
+                    DataSnapshot snapshotHijo = snapshotUser.child("hijos");
+
+                    for(DataSnapshot hijoSnapshot : snapshotHijo.getChildren()){
+
+                        //Obtenemos el sexo de cada hijo
+                        String sexoHijo = hijoSnapshot.child("sexo").getValue(String.class);
+
+                        Log.d("SEXO", sexoHijo);
+
+
+                        if (sexoHijo.equals("Masculino")){
+
+                            contadorH = contadorH + 1;
+                            contadorTotal = contadorTotal + 1;
+
+                        }else if (sexoHijo.equals("Femenino")){
+
+                            contadorF = contadorF + 1;
+                            contadorTotal = contadorTotal + 1;
+                        }
+                    }
+                }
+
+
+                //Una vez que tenemos el numero de masculino y femenino de los hijos guardaremos los datos al igual que el linechart en la base de datos para mantenerlos persistentes
+                dataMap.put("contadorTotal", contadorTotal);
+                dataMap.put("contadorMasculino", contadorH);
+                dataMap.put("contadorFemenino", contadorF);
+
+                //referenciamos al nodo donde queremos meter el Map
+                dr.child("stats").child("pie").setValue(dataMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                        Log.d("stats", "pie insertado exitosamente");
+                    }
+                });
+
+                //Añadimos al arraylist los datos que hemos obtenido del recuentio
+                ArrayList<PieEntry> contadorSexo = new ArrayList<>();
+                contadorSexo.add(new PieEntry(contadorH,"Niños"));
+                contadorSexo.add(new PieEntry(contadorF,"Niñas"));
+
+                // Crear un conjunto de datos para el gráfico circular
+                PieDataSet dataSet = new PieDataSet(contadorSexo,"");
+
+                // Configurar colores para cada segmento del gráfico
+                dataSet.setColors(Color.BLUE, Color.MAGENTA); // Por ejemplo, azul para hombres, magenta para mujeres y verde para total
+
+                // Crear una instancia de PieData que contiene el conjunto de datos
+                PieData data = new PieData(dataSet);
+
+                // Obtener la referencia al gráfico circular
+                PieChart pieChart = findViewById(R.id.graficoCirculo); // Asegúrate de que el ID sea el correcto
+
+                // Configurar el gráfico con los datos
+                pieChart.setData(data);
+
+                // Actualizar el gráfico
+                pieChart.invalidate();
+
+
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
 
 
 
