@@ -60,7 +60,7 @@ public class PantallaMensajes extends AppCompatActivity {
                 listaCorreosEliminadosDestinatario.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Correo correo = snapshot.getValue(Correo.class);
-                    if (!correo.isEliminadoRemitente()) {
+                    if (!correo.isEliminado() && !correo.isEliminadoRemitente()) {
                         listaCorreos.add(correo);
                     } else if (correo.isEliminado() && correo.getDestinatario().equals(correoUsuarioActual)) {
                         listaCorreosEliminadosDestinatario.add(correo);
@@ -153,7 +153,7 @@ public class PantallaMensajes extends AppCompatActivity {
                 listaCorreosEliminadosDestinatario.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Correo correo = snapshot.getValue(Correo.class);
-                    if (!correo.isEliminadoRemitente()) {
+                    if (!correo.isEliminado() && !correo.isEliminadoRemitente()) {
                         listaCorreos.add(correo);
                     } else if (correo.isEliminado() && correo.getDestinatario().equals(correoUsuarioActual)) {
                         listaCorreosEliminadosDestinatario.add(correo);
@@ -223,4 +223,10 @@ public class PantallaMensajes extends AppCompatActivity {
         Intent intent = new Intent(this, PantallaCorreo.class);
         startActivity(intent);
     }
+
+    public void nav(View view) {
+        Intent intent = new Intent(this, PantallaCorreo.class);
+        startActivity(intent);
+    }
+    
 }
