@@ -33,6 +33,7 @@ public class PantallaCrearHijo extends AppCompatActivity {
     String apellidosHijo;
     String edadHijo;
     String cursoHijo;
+    String sexoHijo;
 
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference().child("usuarios");
 
@@ -44,6 +45,8 @@ public class PantallaCrearHijo extends AppCompatActivity {
     Button btAñadirHijo;
 
     Spinner spinnerCursos;
+
+    Spinner spinnerSexo;
 
     //Variable donde recogemos lo pasado a través del intent
     String userEmail;
@@ -59,6 +62,7 @@ public class PantallaCrearHijo extends AppCompatActivity {
 
         //Lista donde guardamos los cursos disponibles para su eleccion
         String [] cursos = {"1ºA", "1ºB", "1ºC","2ºA", "2ºB", "2ºC","3ºA", "3ºB", "3ºC","4ºA", "4ºB", "4ºC","5ºA", "5ºB", "5ºC","6ºA", "6ºB", "6ºC",};
+        String[] sexo = {"Masculino", "Femenino"};
 
 
         ///Vinculamos los elementos
@@ -67,13 +71,17 @@ public class PantallaCrearHijo extends AppCompatActivity {
         edad = findViewById(R.id.edadHijo);
         spinnerCursos = findViewById(R.id.spCursos);
         btAñadirHijo = findViewById(R.id.btAnadirHijo);
+        spinnerSexo = findViewById(R.id.spinnerSexo);
 
-        //Vinculamos la lista al spinner a través de un adpater
         //Vinculamos el arrayList al spinner a traves de un adaptador
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cursos);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        ArrayAdapter<String> adapterSexo = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, sexo);
+        adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinnerCursos.setAdapter(adapter);
+        spinnerSexo.setAdapter(adapterSexo);
 
 
         //Escuchamos la seleccion del spinner para poder guardarlo en una variable
@@ -82,6 +90,20 @@ public class PantallaCrearHijo extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //Guradamos el elemento que seleccionamos en el spinner en una variable para poder crear el objeto hijo
                 cursoHijo = spinnerCursos.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //Escuchamos la seleccion del spinner para poder guardarlo en una variable
+        spinnerSexo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //Guradamos el elemento que seleccionamos en el spinner en una variable para poder crear el objeto hijo
+                sexoHijo = spinnerSexo.getSelectedItem().toString();
             }
 
             @Override
@@ -112,8 +134,9 @@ public class PantallaCrearHijo extends AppCompatActivity {
         Log.d("objetohijo", nombreHijo);
         Log.d("objetohijo", apellidosHijo);
         Log.d("objetohijo", edadHijo);
+        Log.d("objetohijo", sexoHijo);
 
-        Hijo hijo = new Hijo(nombreHijo,apellidosHijo,edadHijo,cursoHijo);
+        Hijo hijo = new Hijo(nombreHijo,apellidosHijo,edadHijo,cursoHijo,sexoHijo);
 
 
 
