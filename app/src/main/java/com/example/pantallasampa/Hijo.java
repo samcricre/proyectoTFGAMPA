@@ -7,16 +7,18 @@ public class Hijo {
     String apellidos;
     String edad;
     String curso;
+    String sexo;
 
 
     //Constructores
     public Hijo(){}
 
-    public Hijo(String nombre, String apellidos, String edad, String curso) {
+    public Hijo(String nombre, String apellidos, String edad, String curso, String sexo) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.edad = edad;
         this.curso = curso;
+        this.sexo = sexo;
     }
 
     //Getter y setter
@@ -50,5 +52,13 @@ public class Hijo {
 
     public void setCurso(String curso) {
         this.curso = curso;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 }

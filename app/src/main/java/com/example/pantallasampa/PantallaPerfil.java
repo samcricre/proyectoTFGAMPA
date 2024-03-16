@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -57,10 +58,18 @@ public class PantallaPerfil extends AppCompatActivity {
     //Key del usuario logeado
     String keyUsuario;
 
-    //LineaChart
+    //LineaChart - Grafico de linea
     LineChart graficoLinea;
     int numeroUsuarios;
     ArrayList<Integer> progresionUsuarios = new ArrayList<>();
+
+    //PieChart - Gráfico de circulo
+    PieChart graficoCirculo;
+
+    int contadorH;
+    int contadorF;
+    int contadorTotal;
+
 
     //Usamos la clave recibida a través deñ intent para acceder a los datos de esa key
     DatabaseReference dr = FirebaseDatabase.getInstance().getReference();//Aqui estamos diciendo que apunte a los usuarios
@@ -81,7 +90,9 @@ public class PantallaPerfil extends AppCompatActivity {
         scrollUsuario = findViewById(R.id.scrollUsuario);
         graficoLinea = findViewById(R.id.graficoLineal);
         tVNumeroUsuarios = findViewById(R.id.tVNumeroUsuarios);
+        graficoCirculo = findViewById(R.id.graficoCirculo);
 
+        //Llamada a los metodos de los graficos
         graficoLineal();
 
         //Obtenemos la key del usuario logeado
@@ -165,9 +176,10 @@ public class PantallaPerfil extends AppCompatActivity {
                                     String apellidos = hijoSnapshot.child("apellidos").getValue(String.class);
                                     String curso = hijoSnapshot.child("curso").getValue(String.class);
                                     String edad = hijoSnapshot.child("edad").getValue(String.class);
+                                    String sexo = hijoSnapshot.child("sexo").getValue(String.class);
 
                                     //Creamos el objeto del hijo con los datos obtenidos y lo añadimos al arraylist
-                                    Hijo hijo = new Hijo(nombre, apellidos, edad, curso);
+                                    Hijo hijo = new Hijo(nombre, apellidos, edad, curso,sexo);
                                     hijos.add(hijo);
 
                                     //Le pasamos los datos al adpter
@@ -289,7 +301,14 @@ public class PantallaPerfil extends AppCompatActivity {
 
 
 
+    //Método piechart
+    public void graficoCirculo(){
 
+
+
+
+
+    }
 
 
     //Metodo para navegar a crear hijo
