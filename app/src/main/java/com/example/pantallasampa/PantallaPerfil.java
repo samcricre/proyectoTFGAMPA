@@ -47,10 +47,14 @@ public class PantallaPerfil extends AppCompatActivity {
     TextView telefonoUsuario;
 
     TextView tVNumeroUsuarios;
+    TextView tVNinos;
+    TextView tVNinas;
+    TextView tVTotal;
 
     ListView listaHijos;
 
     ScrollView scrollUsuario;
+    ScrollView scrollAdmin;
 
     //Variable donde guardamos lo enviado a través del intent
     String userEmail;
@@ -95,6 +99,9 @@ public class PantallaPerfil extends AppCompatActivity {
         graficoLinea = findViewById(R.id.graficoLineal);
         tVNumeroUsuarios = findViewById(R.id.tVNumeroUsuarios);
         graficoCirculo = findViewById(R.id.graficoCirculo);
+        tVNinos = findViewById(R.id.tVNinos);
+        tVNinas = findViewById(R.id.tVNinas);
+        tVTotal = findViewById(R.id.tvTotal);
 
         //Llamada a los metodos de los graficos
         graficoLineal();
@@ -348,6 +355,10 @@ public class PantallaPerfil extends AppCompatActivity {
                     }
                 }
 
+                //Mostramos los valores obtenidos en la interfaz
+                tVNinos.setText(String.valueOf(contadorH));
+                tVNinas.setText(String.valueOf(contadorF));
+                tVTotal.setText(String.valueOf(contadorTotal));
 
                 //Una vez que tenemos el numero de masculino y femenino de los hijos guardaremos los datos al igual que el linechart en la base de datos para mantenerlos persistentes
                 dataMap.put("contadorTotal", contadorTotal);
@@ -372,7 +383,7 @@ public class PantallaPerfil extends AppCompatActivity {
                 PieDataSet dataSet = new PieDataSet(contadorSexo,"");
 
                 // Configurar colores para cada segmento del gráfico
-                dataSet.setColors(Color.BLUE, Color.MAGENTA); // Por ejemplo, azul para hombres, magenta para mujeres y verde para total
+                dataSet.setColors(Color.parseColor("#003E77"),Color.parseColor("#F36EF5")); // Por ejemplo, azul para hombres, magenta para mujeres y verde para total
 
                 // Crear una instancia de PieData que contiene el conjunto de datos
                 PieData data = new PieData(dataSet);
