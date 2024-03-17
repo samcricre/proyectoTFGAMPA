@@ -13,16 +13,21 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Firebase;
 import com.google.firebase.database.DataSnapshot;
@@ -77,6 +82,16 @@ public class PantallaPerfil extends AppCompatActivity {
     int contadorF = 0;
     int contadorTotal = 0;
 
+    //Barchart - Grafico Barras
+    BarChart graficoBarras;
+
+    String titularNoticia;
+    int numeroNoticia;
+    int numeroClicks;
+
+    //Arraylist donde guardamos los datos del barchart
+    ArrayList <BarEntry> entries = new ArrayList<>();
+    ArrayList <String> label = new ArrayList<>();
 
 
     //Usamos la clave recibida a través deñ intent para acceder a los datos de esa key
@@ -96,22 +111,31 @@ public class PantallaPerfil extends AppCompatActivity {
         telefonoUsuario = findViewById(R.id.tVTelefono);
         listaHijos = findViewById(R.id.listViewHijos);
         scrollUsuario = findViewById(R.id.scrollUsuario);
+        scrollAdmin = findViewById(R.id.scrollAdmin);
         graficoLinea = findViewById(R.id.graficoLineal);
         tVNumeroUsuarios = findViewById(R.id.tVNumeroUsuarios);
         graficoCirculo = findViewById(R.id.graficoCirculo);
         tVNinos = findViewById(R.id.tVNinos);
         tVNinas = findViewById(R.id.tVNinas);
         tVTotal = findViewById(R.id.tvTotal);
+        graficoBarras = findViewById(R.id.graficoBarras);
+
+        //Recibimos los datos del intent
+        userEmail = getIntent().getStringExtra("emailUser");
+        keyUsuario = getIntent().getStringExtra("keyUsuario");
+
+        //comprobamos el rol de usuario
+        comprobarRol();
 
         //Llamada a los metodos de los graficos
         graficoLineal();
-        graficoCirculo();;
+        graficoCirculo();
+        graficoBarras();
 
         //Obtenemos la key del usuario logeado
         keyUser();
 
-        //Recibimos los datos del intent
-        userEmail = getIntent().getStringExtra("emailUser");
+
 
         //Log.d("perfil", userEmail);
 
@@ -317,8 +341,6 @@ public class PantallaPerfil extends AppCompatActivity {
 
     }
 
-
-
     //Método piechart
     public void graficoCirculo(){
 
@@ -406,12 +428,100 @@ public class PantallaPerfil extends AppCompatActivity {
             }
         });
 
+    }
 
 
+    //Metodo contador de clicks / grafica de barras
+    public void graficoBarras(){
 
 
+        dr.child("noticias").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                //Recorremos todas las noticias registradas y extraemos su titular y su numero de clicks
+                for(DataSnapshot noticiaSnapshot : snapshot.getChildren()){
+
+                    titularNoticia = noticiaSnapshot.child("titular").getValue(String.class);
+                    numeroClicks = noticiaSnapshot.child("clicks").getValue(Integer.class);
+
+                    //Guardamos los datos en el nodo de stats
+                    dr.child("stats").child("barchart").child(titularNoticia).child("numeroClicks").setValue(numeroClicks).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d ("stats", "Insertado");
+                        }
+                    });
+
+                    //Guradamos en arraylist los titulos y clicks para poder meterlos posteriormetne en el grafico
+                    entries.add(new BarEntry(entries.size(),Math.max(numeroClicks,0)));
+
+                    label.add(titularNoticia);
+
+                }
 
 
+                //Creamos conjunto de datos para crear grafico
+                BarDataSet dataSet= new BarDataSet(entries,"");
+                dataSet.setColor(Color.parseColor("#003E77"));
+
+                // Crear un objeto BarData y asignar el conjunto de datos a él
+                BarData barData = new BarData(dataSet);
+
+                // Configurar el BarChart con los datos y otras opciones
+                graficoBarras.setData(barData);
+                graficoBarras.setFitBars(true); // Ajustar el ancho de las barras para que se ajusten al contenedor
+
+                // Configurar las etiquetas en el eje X
+                XAxis xAxis = graficoBarras.getXAxis();
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(label)); // Establecer las etiquetas personalizadas
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Colocar el eje X en la parte inferior
+                xAxis.setGranularity(1f); // Espaciar las etiquetas por unidad
+                xAxis.setTextColor(Color.WHITE);
+
+                // Configurar el eje y del gráfico
+                YAxis yAxis = graficoBarras.getAxisLeft(); // Obtener el eje y izquierdo
+                yAxis.setAxisMinimum(0f); // Establecer el mínimo en 0
+                yAxis.setAxisMaximum(100f); // Establecer el máximo en 100
+                yAxis.setTextColor(Color.WHITE);
+
+                graficoBarras.invalidate(); // Actualizar el gráfico
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+    //Metodo comprobar rol para poder publicar noticia
+    //Método para comprobar el rol del usuario que se introduce
+    public void comprobarRol(){
+
+
+        //Apuntamos el dr a usuarios
+        dr.child("usuarios").child(keyUsuario).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                String rol = snapshot.child("roll").getValue(String.class);
+
+                if(rol.equals("usuario")){
+                    scrollAdmin.setVisibility(View.GONE);
+                    scrollUsuario.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 

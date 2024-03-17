@@ -306,7 +306,7 @@
                         android:background="#003E77" />
 
                     <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/barChart"
+                        android:id="@+id/graficoBarras"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_centerInParent="true"
