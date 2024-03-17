@@ -1,6 +1,7 @@
 package com.example.pantallasampa;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,11 @@ public class EventAdapter extends ArrayAdapter<Evento> {
         listItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Ir a la nueva pantalla por detalles
+                //Ir a la nueva pantalla por detalles también faltan los put extras
+                Intent intent = new Intent(mContext, PantallaLeerEvento.class);
+                intent.putExtra("title",eventTitle.getText().toString());
+                intent.putExtra("descipt", eventDescript.getText().toString());
+                mContext.startActivity(intent);
             }
         });
 

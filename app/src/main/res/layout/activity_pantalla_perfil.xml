@@ -230,7 +230,7 @@
                             android:textColor="#707070" />
 
                         <TextView
-                            android:id="@+id/textView48"
+                            android:id="@+id/tituloLeer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Niñas : "

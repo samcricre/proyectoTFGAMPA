@@ -19,6 +19,9 @@
             android:name=".PantallaMensajesAdmin"
             android:exported="false" />
         <activity
+            android:name=".PantallaLeerEvento"
+            android:exported="false" />
+        <activity
             android:name=".PantallaCarnetSocio"
             android:exported="false" />
         <activity
