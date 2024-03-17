@@ -90,6 +90,10 @@ public class PantallaCrearEventos extends AppCompatActivity {
                     //Las horas se predefinen para que duren el día o días enteros
                     textoHoraInicio.setText("00:00");
                     textoHoraFin.setText("23:59");
+                    horaInicio = 0;
+                    horaFin = 23;
+                    minutoInicio = 0;
+                    minFin = 59;
 
                     //Deshabilita las vistas de hora
                     btHoraInicio.setEnabled(false);
