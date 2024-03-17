@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PantallaCrearSorteo">
+
+    <LinearLayout
+        android:layout_width="410dp"
+        android:layout_height="736dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Cancelar Button -->
+        <Button
+            android:id="@+id/btCancelarSorteo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:background="@android:color/transparent"
+            android:text="Cancelar"
+            android:textColor="#F44336"
+            android:textSize="20sp" />
+
+        <!-- Nombre -->
+        <TextView
+            android:id="@+id/textViewNombreSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="20dp"
+            android:text="Nombre del Sorteo:"
+            android:textColor="#003E77"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/nombreSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <!-- Descripción -->
+        <TextView
+            android:id="@+id/textViewDescripcionSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="20dp"
+            android:text="Descripción del Sorteo:"
+            android:textColor="#003E77"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/descripcionSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:textSize="20sp" />
+
+        <!-- Premios -->
+        <TextView
+            android:id="@+id/textViewPremiosSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="20dp"
+            android:text="Premios del Sorteo:"
+            android:textColor="#003E77"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/premiosSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <!-- Botón Crear Sorteo -->
+        <Button
+            android:id="@+id/btCrearSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="30dp"
+            android:backgroundTint="#B6DCFF"
+            android:text="Crear Sorteo"
+            android:textColor="#003E77"
+            android:textSize="20sp"
+            app:cornerRadius="10dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
