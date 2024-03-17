@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class PantallaNoticias extends AppCompatActivity {
+
+    private ImageView home, email, event, profile;
+    private boolean rol;
 
     String emailUser;
     String keyUsuario;
@@ -37,6 +41,18 @@ public class PantallaNoticias extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_noticias);
+
+        //Variables de la barra inferior de navegación
+        home = findViewById(R.id.goHomeNews);
+        email = findViewById(R.id.goEmailNews);
+        event = findViewById(R.id.goEventNews);
+        profile = findViewById(R.id.goProfileNews);
+        emailUser = getIntent().getStringExtra("emailUser");
+        rol = getIntent().getBooleanExtra("rol", false);
+        if(rol)//si roll es true significa es admin
+            configurarAccionesBarraInferiorAdmin();
+        else//si es false es que es usuario
+            configurarAccionesBarraInferiorUsuario();
 
         //Recibimos lo pasado por el intent
         emailUser = getIntent().getStringExtra("emailUser");
@@ -122,4 +138,25 @@ public class PantallaNoticias extends AppCompatActivity {
 
     }
 
+    private void configurarAccionesBarraInferiorAdmin() {
+        home.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
+        email.setOnClickListener(v -> navigateTo(PantallaMensajesAdmin.class));
+    }
+    private void configurarAccionesBarraInferiorUsuario() {
+        home.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
+        email.setOnClickListener(v -> navigateTo(PantallaMensajes.class));
+    }
+
+    //Método complementario de configurarAccionesBarraInferior() el cual realizar el Intent y envía el emailUser [Sujeto a cambios]
+    private void navigateTo(Class<?> destination) {
+        Intent intent = new Intent(PantallaNoticias.this, destination);
+        intent.putExtra("emailUser", emailUser);
+        intent.putExtra("keyUsuario", keyUsuario);
+        intent.putExtra("rol", rol);
+        startActivity(intent);
+    }
 }

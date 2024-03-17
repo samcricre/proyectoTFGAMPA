@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,9 @@ import java.util.List;
 
 public class PantallaMensajesAdmin extends AppCompatActivity {
 
+    private ImageView home, news, event, profile;
+    private boolean rol;
+    private String emailUser;
     private ListView listViewCorreos;
     private List<Correo> listaCorreos;
     private DatabaseReference correosRef;
@@ -36,6 +40,18 @@ public class PantallaMensajesAdmin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_mensajes_admin);
+
+        //Variables de la barra inferior de navegación
+        home = findViewById(R.id.goHomeEmailAd);
+        news = findViewById(R.id.goNewsEmailAd);
+        event = findViewById(R.id.goEventEmailAd);
+        profile = findViewById(R.id.goProfileEmailAd);
+        emailUser = getIntent().getStringExtra("emailUser");
+        rol = getIntent().getBooleanExtra("rol", false);
+        if(rol)//si roll es true significa es admin
+            configurarAccionesBarraInferiorAdmin();
+        else//si es false es que es usuario
+            configurarAccionesBarraInferiorUsuario();
 
         listViewCorreos = findViewById(R.id.listviewmensajes);
         listaCorreos = new ArrayList<>();
@@ -134,6 +150,26 @@ public class PantallaMensajesAdmin extends AppCompatActivity {
     // Método para navegar a otra pantalla (opcional)
     public void nav(View view) {
         Intent intent = new Intent(this, PantallaCorreo.class);
+        startActivity(intent);
+    }
+
+    private void configurarAccionesBarraInferiorAdmin() {
+        news.setOnClickListener(v -> navigateTo(PantallaNoticias.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
+        home.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+    }
+    private void configurarAccionesBarraInferiorUsuario() {
+        news.setOnClickListener(v -> navigateTo(PantallaNoticias.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
+        home.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+    }
+    private void navigateTo(Class<?> destination) {
+        Intent intent = new Intent(PantallaMensajesAdmin.this, destination);
+        intent.putExtra("emailUser", emailUser);
+        intent.putExtra("keyUsuario", getIntent().getStringExtra("keyUsuario"));
+        intent.putExtra("rol", rol);
         startActivity(intent);
     }
 }

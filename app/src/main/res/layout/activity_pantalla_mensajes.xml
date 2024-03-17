@@ -21,7 +21,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/goHome"
+                android:id="@+id/goHomeEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -35,21 +35,21 @@
                 app:srcCompat="@drawable/icono_correonav" />
 
             <ImageView
-                android:id="@+id/goEvent"
+                android:id="@+id/goEventEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/icono_eventosnav" />
 
             <ImageView
-                android:id="@+id/goNews"
+                android:id="@+id/goNewsEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/icono_noticiasnav" />
 
             <ImageView
-                android:id="@+id/goProfile"
+                android:id="@+id/goProfileEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

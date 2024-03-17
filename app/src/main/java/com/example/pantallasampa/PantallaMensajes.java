@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,21 +26,34 @@ import java.util.List;
 
 public class PantallaMensajes extends AppCompatActivity {
 
+    private ImageView home, news, event, profile;
     private ListView listViewCorreos;
-    private List<Correo> listaCorreos;
-    private List<Correo> listaCorreosEliminadosRemitente;
-    private List<Correo> listaCorreosEliminadosDestinatario;
+    private List<Correo> listaCorreos, listaCorreosEliminadosRemitente, listaCorreosEliminadosDestinatario;
     private DatabaseReference correosRef;
-    private CardView cardViewEnviados;
-    private CardView cardViewRecibidos;
-    private CardView cardViewBorrados;
+    private CardView cardViewEnviados, cardViewRecibidos, cardViewBorrados;
     private TextView modo;
+    private String emailUser;
+    private boolean rol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_mensajes);
 
+        //Variables de la barra inferior de navegación
+        home = findViewById(R.id.goHomeEmail);
+        news = findViewById(R.id.goNewsEmail);
+        event = findViewById(R.id.goEventEmail);
+        profile = findViewById(R.id.goProfileEmail);
+        emailUser = getIntent().getStringExtra("emailUser");
+        rol = getIntent().getBooleanExtra("rol", false);
+        if(rol)//si roll es true significa es admin
+            configurarAccionesBarraInferiorAdmin();
+        else//si es false es que es usuario
+            configurarAccionesBarraInferiorUsuario();
+
+
+        //Variables inicializadas
         listViewCorreos = findViewById(R.id.listviewmensajes);
         listaCorreos = new ArrayList<>();
         listaCorreosEliminadosRemitente = new ArrayList<>();
@@ -224,8 +238,25 @@ public class PantallaMensajes extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void nav(View view) {
-        Intent intent = new Intent(this, PantallaCorreo.class);
+
+
+    private void configurarAccionesBarraInferiorAdmin() {
+        news.setOnClickListener(v -> navigateTo(PantallaNoticias.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
+        home.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+    }
+    private void configurarAccionesBarraInferiorUsuario() {
+        news.setOnClickListener(v -> navigateTo(PantallaNoticias.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
+        home.setOnClickListener(v -> navigateTo(PantallaEventos.class));
+    }
+    private void navigateTo(Class<?> destination) {
+        Intent intent = new Intent(PantallaMensajes.this, destination);
+        intent.putExtra("emailUser", emailUser);
+        intent.putExtra("keyUsuario", getIntent().getStringExtra("keyUsuario"));
+        intent.putExtra("rol", rol);
         startActivity(intent);
     }
     

@@ -46,10 +46,12 @@ public class PantallaEventos extends AppCompatActivity {
         keyUsuario = getIntent().getStringExtra("keyUsuario");
         dr = FirebaseDatabase.getInstance().getReference();
 
+        //Variables de la barra inferior de navegación
         email = findViewById(R.id.goEmail);
         news = findViewById(R.id.goNews);
         event = findViewById(R.id.goEvent);
         profile = findViewById(R.id.goProfile);
+
         selecHijo = findViewById(R.id.spinnerSelectHijos);
         listaEventos = findViewById(R.id.eventList);
 
@@ -150,12 +152,12 @@ public class PantallaEventos extends AppCompatActivity {
                 //Dependiendo de su roll se tendrá una funciónalidad distinta
                 if(user.getRoll().equals("usuario") && !user.getRoll().isEmpty()){
                     cargarHijos();
-                    configurarAccionesBarraInferior();//Por si el navigate es distinto [si no lo cambio de vuelta]
+                    configurarAccionesBarraInferiorUsuario();
                     esAdmin = false;
                 }
                 else{
                     cargarCursos();
-                    configurarAccionesBarraInferior();
+                    configurarAccionesBarraInferiorAdmin();
                     esAdmin = true;
                 }
             }
@@ -222,7 +224,13 @@ public class PantallaEventos extends AppCompatActivity {
     }
 
     //Método que nos serrivrá para asignar a cada uno de los iconos un Intent con el método NagateTo y la clase a la que van [Sujeto a cambios]
-    private void configurarAccionesBarraInferior() {
+    private void configurarAccionesBarraInferiorAdmin() {
+        news.setOnClickListener(v -> navigateTo(PantallaNoticias.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
+        email.setOnClickListener(v -> navigateTo(PantallaMensajesAdmin.class));
+    }
+    private void configurarAccionesBarraInferiorUsuario() {
         news.setOnClickListener(v -> navigateTo(PantallaNoticias.class));
         event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
         profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
@@ -234,6 +242,7 @@ public class PantallaEventos extends AppCompatActivity {
         Intent intent = new Intent(PantallaEventos.this, destination);
         intent.putExtra("emailUser", emailUser);
         intent.putExtra("keyUsuario", keyUsuario);
+        intent.putExtra("rol", esAdmin);
         startActivity(intent);
     }
 

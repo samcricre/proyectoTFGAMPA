@@ -22,7 +22,7 @@
 
             <!-- Icono para ir a la pantalla principal -->
             <ImageView
-                android:id="@+id/goHome"
+                android:id="@+id/goHomeEmailAd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -38,7 +38,7 @@
 
             <!-- Icono para ir a la pantalla de eventos -->
             <ImageView
-                android:id="@+id/goEvent"
+                android:id="@+id/goEventEmailAd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -46,7 +46,7 @@
 
             <!-- Icono para ir a la pantalla de noticias -->
             <ImageView
-                android:id="@+id/goNews"
+                android:id="@+id/goNewsEmailAd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -54,7 +54,7 @@
 
             <!-- Icono para ir al perfil del usuario -->
             <ImageView
-                android:id="@+id/goProfile"
+                android:id="@+id/goProfileEmailAd"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
