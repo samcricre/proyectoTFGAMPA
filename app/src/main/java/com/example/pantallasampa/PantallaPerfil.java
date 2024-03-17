@@ -398,9 +398,6 @@ public class PantallaPerfil extends AppCompatActivity {
                 pieChart.invalidate();
 
 
-
-
-
             }
 
             @Override

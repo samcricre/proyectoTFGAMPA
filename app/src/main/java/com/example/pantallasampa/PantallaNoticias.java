@@ -94,8 +94,9 @@ public class PantallaNoticias extends AppCompatActivity {
                     String titular = noticiaSnapshot.child("titular").getValue(String.class);
                     String subtitulo = noticiaSnapshot.child("subtitulo").getValue(String.class);
                     String cuerpo = noticiaSnapshot.child("cuerpo").getValue(String.class);
+                    int nClicks = noticiaSnapshot.child("clicks").getValue(Integer.class);
 
-                    Noticia noticia = new Noticia (titular,subtitulo,cuerpo);
+                    Noticia noticia = new Noticia (titular,subtitulo,cuerpo, nClicks);
 
                     noticias.add(noticia);
 

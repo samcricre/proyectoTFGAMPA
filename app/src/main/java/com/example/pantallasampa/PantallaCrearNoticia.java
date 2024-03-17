@@ -17,6 +17,7 @@ public class PantallaCrearNoticia extends AppCompatActivity {
     String titular;
     String subtitulo;
     String cuerpo;
+    int clicks = 0;
 
 
     //Variables para enlazar los elementos
@@ -40,12 +41,6 @@ public class PantallaCrearNoticia extends AppCompatActivity {
         eTitular = findViewById(R.id.titularNoticia);
         eSubtitulo = findViewById(R.id.subtituloNoticia);
         eCuerpo = findViewById(R.id.cuerpoNoticia);
-
-
-
-
-
-
     }
 
 
@@ -57,7 +52,7 @@ public class PantallaCrearNoticia extends AppCompatActivity {
         cuerpo = eCuerpo.getText().toString();
 
         //Creamos objeto noticia
-        Noticia noticia = new Noticia(titular,subtitulo,cuerpo);
+        Noticia noticia = new Noticia(titular,subtitulo,cuerpo,clicks);
 
         //Sacamos la key que apuntara a la noticia
         String key = dr.child("noticias").push().getKey();
