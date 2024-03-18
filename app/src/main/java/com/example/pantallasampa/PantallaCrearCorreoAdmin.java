@@ -1,14 +1,15 @@
 package com.example.pantallasampa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,9 +32,9 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
     private EditText asuntoEditText;
     private EditText contenidoEditText;
     private Button enviarButton;
-    private RadioGroup radioGroup;
     private Spinner spinnerTipoCorreo;
     private EditText editTextCurso;
+    private TextView irAPantallaTextView;
 
     private DatabaseReference correosRef;
 
@@ -48,9 +49,15 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
         enviarButton = findViewById(R.id.buttonEnviar);
         spinnerTipoCorreo = findViewById(R.id.spinnerTipoCorreo);
         editTextCurso = findViewById(R.id.editTextCurso);
+        irAPantallaTextView = findViewById(R.id.textView16);
 
         // Obtener una referencia a la base de datos de Firebase
         correosRef = FirebaseDatabase.getInstance().getReference().child("correos");
+
+        // Inicializar el spinner con los datos apropiados
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.tipos_correo, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTipoCorreo.setAdapter(adapter);
 
         enviarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,10 +71,12 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedOption = parent.getItemAtPosition(position).toString();
-                if (selectedOption.equals("Filtrar por curso")) {
+                if (selectedOption.equals("Enviar a todos los usuarios del curso")) {
                     editTextCurso.setEnabled(true);
+                    destinatarioEditText.setEnabled(false); // Deshabilitar el campo de destinatario
                 } else {
                     editTextCurso.setEnabled(false);
+                    destinatarioEditText.setEnabled(true); // Habilitar el campo de destinatario
                 }
             }
 
@@ -76,13 +85,18 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
                 // No hacemos nada aquí
             }
         });
+
+        // Configurar el onClickListener para el TextView irAPantalla
+        irAPantallaTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                irAPantalla();
+            }
+        });
     }
 
     private void enviarCorreo() {
-        // Obtener el tipo de correo seleccionado
-        int selectedId = radioGroup.getCheckedRadioButtonId();
-        RadioButton radioButton = findViewById(selectedId);
-        String tipoCorreo = radioButton.getText().toString();
+        String tipoCorreo = spinnerTipoCorreo.getSelectedItem().toString();
 
         String destinatario = destinatarioEditText.getText().toString();
         String asunto = asuntoEditText.getText().toString();
@@ -94,40 +108,42 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
         String remitente = currentUser.getEmail();
 
         // Validar que los campos no estén vacíos
-        if (TextUtils.isEmpty(destinatario) || TextUtils.isEmpty(asunto) || TextUtils.isEmpty(contenido)) {
+        if (TextUtils.isEmpty(asunto) || TextUtils.isEmpty(contenido)) {
             Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Validar el tipo de correo y tomar acciones correspondientes
         switch (tipoCorreo) {
-            case "Todos los usuarios no admins":
-                enviarCorreoATodosLosUsuariosNoAdmins(remitente, asunto, contenido);
+            case "Enviar a todos los usuarios":
+                enviarCorreoATodosLosUsuarios(remitente, asunto, contenido);
                 break;
-            case "Usuarios con hijos en una clase":
-                enviarCorreoAUsuariosConHijosEnClaseEspecifica(remitente, asunto, contenido,curso);
-
+            case "Enviar a todos los usuarios del curso":
+                if (TextUtils.isEmpty(curso)) {
+                    Toast.makeText(this, "Por favor, introduzca un curso", Toast.LENGTH_SHORT).show();
+                } else {
+                    enviarCorreoAUsuariosConHijosEnClaseEspecifica(remitente, asunto, contenido, curso);
+                }
                 break;
-            case "Persona específica":
-                enviarCorreoAPersonaEspecifica(remitente, asunto, contenido);
+            case "Enviar a una persona":
+                if (TextUtils.isEmpty(destinatario)) {
+                    Toast.makeText(this, "Por favor, introduzca un destinatario", Toast.LENGTH_SHORT).show();
+                } else {
+                    enviarCorreoAPersonaEspecifica(remitente, destinatario, asunto, contenido);
+                }
                 break;
             default:
                 Toast.makeText(this, "Seleccione un tipo de correo", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Lógica para enviar correo a todos los usuarios no admins
-    private void enviarCorreoATodosLosUsuariosNoAdmins(String remitente, String asunto, String contenido) {
-        // Obtener una referencia a la base de datos de usuarios
+
+    private void enviarCorreoATodosLosUsuarios(String remitente, String asunto, String contenido) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("usuarios");
 
-        // Realizar una consulta para obtener todos los usuarios no admins
-        Query query = usersRef.orderByChild("roll").equalTo("user");
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterar sobre los usuarios y enviar correo a cada uno
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     String destinatario = userSnapshot.child("email").getValue(String.class);
                     enviarCorreoIndividual(remitente, destinatario, asunto, contenido);
@@ -136,21 +152,16 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Manejar el error en caso de que la consulta falle
                 Toast.makeText(PantallaCrearCorreoAdmin.this, "Error al obtener usuarios", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // Método para enviar correo a un destinatario específico
     private void enviarCorreoIndividual(String remitente, String destinatario, String asunto, String contenido) {
-        // Crear un objeto Correo con los datos ingresados
-        // Establecer los atributos eliminado y eliminadoRemitente como false por defecto
         Correo correo = new Correo(null, remitente, destinatario, asunto, contenido, System.currentTimeMillis(), false, false);
 
-        // Guardar el correo en la base de datos
-        String correoId = correosRef.push().getKey(); // Obtener el ID único del correo
-        correo.setCorreoId(correoId); // Asignar el correoId al objeto Correo
+        String correoId = correosRef.push().getKey();
+        correo.setCorreoId(correoId);
         correosRef.child(correoId).setValue(correo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -166,63 +177,52 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
                 });
     }
 
-    private void enviarCorreoAUsuariosConHijosEnClaseEspecifica(String remitente, String asunto, String contenido, String clase) {
-        // Obtener una referencia a la base de datos de usuarios
+    private void enviarCorreoAUsuariosConHijosEnClaseEspecifica(String remitente, String asunto, String contenido, String curso) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("usuarios");
 
-        // Realizar una consulta para obtener todos los usuarios que tienen al menos un hijo en la clase especificada
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterar sobre los usuarios
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    // Verificar si el usuario tiene hijos
                     if (userSnapshot.hasChild("hijos")) {
-                        // Iterar sobre los hijos del usuario
                         for (DataSnapshot hijoSnapshot : userSnapshot.child("hijos").getChildren()) {
                             String claseHijo = hijoSnapshot.child("curso").getValue(String.class);
-                            // Verificar si el hijo asiste a la clase especificada
-                            if (claseHijo.equals(clase)) {
-                                // Enviar correo al usuario
+                            if (claseHijo.equals(curso)) {
                                 String destinatario = userSnapshot.child("email").getValue(String.class);
                                 enviarCorreoIndividual(remitente, destinatario, asunto, contenido);
-                                // Salir del bucle interno, ya que solo necesitamos enviar un correo por usuario
+                                // Agregar mensaje Toast para indicar que se envió un correo
+                                Toast.makeText(PantallaCrearCorreoAdmin.this, "Correo enviado a: " + destinatario, Toast.LENGTH_SHORT).show();
                                 break;
+                            } else {
+                                // Agregar mensaje Toast para indicar que no se encontraron usuarios para el curso especificado
+                                Toast.makeText(PantallaCrearCorreoAdmin.this, "No se encontraron usuarios para el curso especificado", Toast.LENGTH_SHORT).show();
                             }
                         }
+                    } else {
+                        // Agregar mensaje Toast para indicar que el usuario no tiene hijos registrados
+                        Toast.makeText(PantallaCrearCorreoAdmin.this, "El usuario no tiene hijos registrados", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Manejar el error en caso de que la consulta falle
                 Toast.makeText(PantallaCrearCorreoAdmin.this, "Error al obtener usuarios", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    private void enviarCorreoAPersonaEspecifica(String asunto, String contenido, String destinatario) {
-        // Obtener el correo electrónico del remitente
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null) {
-            Toast.makeText(this, "Error: usuario no autenticado", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String remitente = currentUser.getEmail();
 
-        // Crear un objeto Correo con los datos ingresados
-        // Establecer los atributos eliminado y eliminadoRemitente como false por defecto
+
+    private void enviarCorreoAPersonaEspecifica(String remitente, String destinatario, String asunto, String contenido) {
         Correo correo = new Correo(null, remitente, destinatario, asunto, contenido, System.currentTimeMillis(), false, false);
 
-        // Guardar el correo en la base de datos
-        String correoId = correosRef.push().getKey(); // Obtener el ID único del correo
-        correo.setCorreoId(correoId); // Asignar el correoId al objeto Correo
+        String correoId = correosRef.push().getKey();
+        correo.setCorreoId(correoId);
         correosRef.child(correoId).setValue(correo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(PantallaCrearCorreoAdmin.this, "Correo enviado correctamente", Toast.LENGTH_SHORT).show();
-                        // Limpiar los campos de texto después de enviar el correo
                         destinatarioEditText.setText("");
                         asuntoEditText.setText("");
                         contenidoEditText.setText("");
@@ -236,7 +236,8 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
                 });
     }
 
-
-
-
+    public void irAPantalla() {
+        Intent intent = new Intent(this, PantallaMensajesAdmin.class);
+        startActivity(intent);
+    }
 }

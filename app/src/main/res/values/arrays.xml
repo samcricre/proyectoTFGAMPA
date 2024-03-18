@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="tipos_correo">
-        <item>Enviar a todos los usuarios no admins</item>
+        <item>Enviar a todos los usuarios</item>
         <item>Enviar a todos los usuarios del curso</item>
         <item>Enviar a una persona</item>
     </string-array>
