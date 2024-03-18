@@ -144,7 +144,7 @@ public class PantallaNoticias extends AppCompatActivity {
     }
     private void configurarAccionesBarraInferiorUsuario() {
         home.setOnClickListener(v -> navigateTo(PantallaEventos.class));
-        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCatalogo.class));
         profile.setOnClickListener(v -> navigateTo(PantallaPerfil.class));
         email.setOnClickListener(v -> navigateTo(PantallaMensajes.class));
     }
