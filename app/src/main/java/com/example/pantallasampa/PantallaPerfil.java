@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -31,6 +32,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,6 +47,8 @@ public class PantallaPerfil extends AppCompatActivity {
 
     private ImageView home, email, event, news;
     private boolean rol;
+    private Button out1;
+    private Button out2;
 
     //Declaramos la variables sobre las que vamos a trabajar
     TextView nombreUsuario;
@@ -118,6 +122,9 @@ public class PantallaPerfil extends AppCompatActivity {
         else//si es false es que es usuario
             configurarAccionesBarraInferiorUsuario();
 
+        //Incializamos boton para cerrar sesión
+        out1 = findViewById(R.id.logOut);
+        out2 = findViewById(R.id.logOut2);
 
         //Vicnulamos las variables  los elementos del xml
         nombreUsuario = findViewById(R.id.tVNombre);
@@ -150,9 +157,25 @@ public class PantallaPerfil extends AppCompatActivity {
         //Obtenemos la key del usuario logeado
         keyUser();
 
+        //Le damos un listener a los botones que nos permieten hacer Log out
+        FirebaseAuth fa = FirebaseAuth.getInstance();
+        out1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fa.signOut();
+                Intent intent = new Intent(PantallaPerfil.this, PantallaInicial.class);
+                startActivity(intent);
+            }
+        });
+        out2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fa.signOut();
+                Intent intent = new Intent(PantallaPerfil.this, PantallaInicial.class);
+                startActivity(intent);
+            }
+        });
 
-
-        //Log.d("perfil", userEmail);
 
         //ordenamos por email de usuarios y comparamos si hay igualdad para extraer sus datos
         dr.child("usuarios").orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -579,7 +602,7 @@ public class PantallaPerfil extends AppCompatActivity {
     }
     private void configurarAccionesBarraInferiorUsuario() {
         email.setOnClickListener(v -> navigateTo(PantallaMensajes.class));
-        event.setOnClickListener(v -> navigateTo(PantallaCrearEventos.class));
+        event.setOnClickListener(v -> navigateTo(PantallaCatalogo.class));
         news.setOnClickListener(v -> navigateTo(PantallaNoticias.class));
         home.setOnClickListener(v -> navigateTo(PantallaEventos.class));
     }

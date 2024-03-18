@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="25dp"
-    android:layout_marginVertical="0dp"
+    android:layout_marginVertical="15dp"
     android:backgroundTint="#86C5FF"
     app:cardCornerRadius="10dp">
 
@@ -27,6 +27,7 @@
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/fechasIni"
                 android:layout_width="70dp"
@@ -35,6 +36,7 @@
                 android:text="XX/XX/XXXX"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/guionFecha"
                 android:layout_width="wrap_content"
@@ -43,6 +45,7 @@
                 android:text="-"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/fechasFin"
                 android:layout_width="70dp"
@@ -67,6 +70,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:textSize="16sp" />
+
             <TextView
                 android:id="@+id/horaIni"
                 android:layout_width="40dp"
@@ -75,6 +79,7 @@
                 android:text="XX:XX"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/guionHora"
                 android:layout_width="wrap_content"
@@ -83,6 +88,7 @@
                 android:text="-"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/horaFin"
                 android:layout_width="40dp"
