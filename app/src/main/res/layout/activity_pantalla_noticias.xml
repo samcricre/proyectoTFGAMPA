@@ -108,7 +108,7 @@
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="15dp"
             android:backgroundTint="#B6DCFF"
-            android:onClick="navCrearNoticia"
+            android:onClick="navAnadirNoticia"
             android:text="Añadir noticia"
             android:textColor="#003E77"
             android:textSize="20sp"

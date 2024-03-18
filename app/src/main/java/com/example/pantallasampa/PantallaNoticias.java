@@ -286,4 +286,11 @@ public class PantallaNoticias extends AppCompatActivity {
         intent.putExtra("cuerpo", noticia.getCuerpo());
         startActivity(intent);
     }
+
+
+    public void navAnadirNoticia(View view){
+
+        Intent intent =  new Intent(this,PantallaCrearNoticia.class);
+        startActivity(intent);
+    }
 }
