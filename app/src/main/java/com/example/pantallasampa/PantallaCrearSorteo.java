@@ -1,10 +1,9 @@
 package com.example.pantallasampa;
 
-import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,7 +72,7 @@ public class PantallaCrearSorteo extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            // Crear una noticia con los datos del sorteo
+                            // Crear una noticia con los datos del sorteo y el id del sorteo
                             String mensajeNoticia = "Nuevo sorteo disponible: " + nombreSorteo;
                             Noticia noticia = new Noticia(nombreSorteo, descripcionSorteo, mensajeNoticia, 0);
 

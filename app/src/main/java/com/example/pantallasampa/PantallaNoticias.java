@@ -99,36 +99,34 @@ public class PantallaNoticias extends AppCompatActivity {
 
 
     //Metodo mostrar listview noticias
-    public void listViewNoticias(){
-
+    // Método para mostrar ListView de noticias
+    public void listViewNoticias() {
         dr.child("noticias").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                for(DataSnapshot noticiaSnapshot : snapshot.getChildren()){
-
+                for (DataSnapshot noticiaSnapshot : snapshot.getChildren()) {
+                    String noticiaId = noticiaSnapshot.getKey(); // Obtener el ID de la noticia
                     String titular = noticiaSnapshot.child("titular").getValue(String.class);
                     String subtitulo = noticiaSnapshot.child("subtitulo").getValue(String.class);
                     String cuerpo = noticiaSnapshot.child("cuerpo").getValue(String.class);
                     int nClicks = noticiaSnapshot.child("clicks").getValue(Integer.class);
 
-                    Noticia noticia = new Noticia (titular,subtitulo,cuerpo, nClicks);
-
+                    Noticia noticia = new Noticia(titular, subtitulo, cuerpo, nClicks, Integer.parseInt(noticiaId));
                     noticias.add(noticia);
-
-                    CrearNoticiaAdapter adapter = new CrearNoticiaAdapter(PantallaNoticias.this,noticias);
-
-                    listaNoticias.setAdapter(adapter);
                 }
+
+                // Crear el adaptador y asignarlo al ListView fuera del bucle for
+                CrearNoticiaAdapter adapter = new CrearNoticiaAdapter(PantallaNoticias.this, noticias);
+                listaNoticias.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Manejar errores si es necesario
             }
         });
-
     }
+
 
     public void navCrearNoticia(View view){
 
