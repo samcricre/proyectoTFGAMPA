@@ -220,7 +220,6 @@ public class PantallaNoticias extends AppCompatActivity {
     }
 
     // Método para mostrar un mensaje de confirmación
-    // Método para mostrar un mensaje de confirmación
     private void mostrarMensajeConfirmacion() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirmación");
