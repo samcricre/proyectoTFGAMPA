@@ -6,12 +6,12 @@ public class Noticia {
     String subtitulo;
     String cuerpo;
     int clicks;
-    int noticiaId; // Nuevo atributo
+    String noticiaId; // Nuevo atributo
 
     public Noticia() {
     }
 
-    public Noticia(String titular, String subtitulo, String cuerpo, int clicks, int noticiaId) {
+    public Noticia(String titular, String subtitulo, String cuerpo, int clicks, String noticiaId) {
         this.titular = titular;
         this.subtitulo = subtitulo;
         this.cuerpo = cuerpo;
@@ -59,11 +59,11 @@ public class Noticia {
         this.clicks = clicks;
     }
 
-    public int getNoticiaId() {
+    public String getNoticiaId() {
         return noticiaId;
     }
 
-    public void setNoticiaId(int noticiaId) {
+    public void setNoticiaId(String noticiaId) {
         this.noticiaId = noticiaId;
     }
 }
