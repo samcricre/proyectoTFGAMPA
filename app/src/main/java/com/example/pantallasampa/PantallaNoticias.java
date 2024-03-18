@@ -212,7 +212,7 @@ public class PantallaNoticias extends AppCompatActivity {
 
         // Agrega botón negativo para cancelar
         builder.setNegativeButton("No", (dialog, which) -> {
-
+            // No hacer nada o puedes agregar alguna acción si lo deseas
         });
 
         // Muestra el diálogo
@@ -286,5 +286,4 @@ public class PantallaNoticias extends AppCompatActivity {
         intent.putExtra("cuerpo", noticia.getCuerpo());
         startActivity(intent);
     }
-
 }
