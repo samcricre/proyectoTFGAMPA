@@ -295,12 +295,12 @@ public class PantallaCrearEventos extends AppCompatActivity {
         }
 
         //Comprobamos que la hora inicio sea menor que la hora final si este evento empieza y acaba el mismo día
-        if(horaFin < horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))&&diaEntero){
+        if(horaFin < horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))){
             Toast.makeText(this, "La hora final debe ser mayor a la hora inicial", Toast.LENGTH_SHORT).show();
             return false;
         }
         else{
-            if (horaFin == horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))&&diaEntero){
+            if (horaFin == horaInicio && ((diaInicio == diaFin) && (anioInicio == anioFin) && (mesInicio == mesFin))){
                 if(minFin <= minutoInicio){
                     Toast.makeText(this, "La hora inicial debe ser mayor a la hora final", Toast.LENGTH_SHORT).show();
                     return false;

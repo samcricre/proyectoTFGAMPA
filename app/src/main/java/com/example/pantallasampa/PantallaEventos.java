@@ -115,7 +115,7 @@ public class PantallaEventos extends AppCompatActivity {
                         if(eventoSnapshot.child("curso").getValue(String.class).equals(clase) && !yaHaPasado(eventoSnapshot.child("fechaFin").getValue(String.class),eventoSnapshot.child("horaFin").getValue(String.class))){
                             Evento recop = eventoSnapshot.getValue(Evento.class);
                             list.add(recop);
-                            EventAdapter adapter = new EventAdapter(PantallaEventos.this,list);
+                            EventAdapter adapter = new EventAdapter(PantallaEventos.this,list, esAdmin, eventoSnapshot.getKey(), emailUser);
                             listaEventos.setAdapter(adapter);
                         }
                     }
