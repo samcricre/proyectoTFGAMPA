@@ -90,7 +90,7 @@ public class PantallaMensajes extends AppCompatActivity {
         });
 
         cardViewEnviados = findViewById(R.id.cardViewEnviados);
-        cardViewRecibidos = findViewById(R.id.cardviewRecibido);
+        cardViewRecibidos = findViewById(R.id.crearSorteo);
         cardViewBorrados = findViewById(R.id.cardViewBorrados);
 
         cardViewEnviados.setOnClickListener(new View.OnClickListener() {

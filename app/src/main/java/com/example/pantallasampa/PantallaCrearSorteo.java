@@ -20,7 +20,6 @@ public class PantallaCrearSorteo extends AppCompatActivity {
 
     private EditText nombreSorteoEditText, descripcionSorteoEditText, premiosSorteoEditText;
     private Button btCrearSorteo;
-
     private DatabaseReference sorteosRef, noticiasRef;
 
     @Override
@@ -68,23 +67,29 @@ public class PantallaCrearSorteo extends AppCompatActivity {
             Sorteos sorteo = new Sorteos(nombreSorteo, descripcionSorteo, premiosSorteo, creador, false, "");
 
             // Guardar el sorteo en la base de datos de Firebase
-            sorteosRef.push().setValue(sorteo)
+            DatabaseReference nuevoSorteoRef = sorteosRef.push();
+            String sorteoId = nuevoSorteoRef.getKey(); // Obtener la clave del nuevo sorteo
+            nuevoSorteoRef.setValue(sorteo)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             // Crear una noticia con los datos del sorteo y el id del sorteo
+                            String titularNoticia = nombreSorteo;
+                            String subtituloNoticia = premiosSorteo;
+                            String cuerpoNoticia = descripcionSorteo;
                             String mensajeNoticia = "Nuevo sorteo disponible: " + nombreSorteo;
-                            Noticia noticia = new Noticia(nombreSorteo, descripcionSorteo, mensajeNoticia, 0);
+                            Noticia noticia = new Noticia(titularNoticia, subtituloNoticia, cuerpoNoticia, 0);
 
                             // Guardar la noticia en la base de datos de Firebase
-                            noticiasRef.push().setValue(noticia)
+                            DatabaseReference nuevaNoticiaRef = noticiasRef.push();
+                            String noticiaId = nuevaNoticiaRef.getKey(); // Obtener la clave de la nueva noticia
+                            noticia.setNoticiaId(noticiaId); // Asignar la clave de la noticia al objeto
+                            nuevaNoticiaRef.setValue(noticia)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            // Obtener la clave de la noticia recién creada
-                                            String noticiaKey = noticiasRef.getKey();
-                                            // Asignar la clave de la noticia al atributo correspondiente del sorteo
-                                            sorteosRef.child(noticiaKey).child("codigoNoticia").setValue(noticiaKey)
+                                            // Asignar la clave de la noticia al sorteo
+                                            sorteosRef.child(sorteoId).child("codigoNoticia").setValue(noticiaId)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
@@ -106,7 +111,8 @@ public class PantallaCrearSorteo extends AppCompatActivity {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(PantallaCrearSorteo.this, "Error al crear la noticia", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(PantallaCrearSorteo
+                                                    .this, "Error al crear la noticia", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                         }

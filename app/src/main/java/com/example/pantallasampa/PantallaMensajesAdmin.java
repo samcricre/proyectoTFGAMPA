@@ -63,7 +63,7 @@ public class PantallaMensajesAdmin extends AppCompatActivity {
         cargarCorreosRecibidos();
 
         cardViewEnviados = findViewById(R.id.cardViewEnviados);
-        cardViewRecibidos = findViewById(R.id.cardviewRecibido);
+        cardViewRecibidos = findViewById(R.id.crearSorteo);
 
         // Configurar los listeners para los botones de acción
         cardViewEnviados.setOnClickListener(new View.OnClickListener() {
@@ -144,12 +144,6 @@ public class PantallaMensajesAdmin extends AppCompatActivity {
     // Método para redactar un nuevo correo
     public void redactarCorreo(View view) {
         Intent intent = new Intent(this, PantallaCrearCorreoAdmin.class);
-        startActivity(intent);
-    }
-
-    // Método para navegar a otra pantalla (opcional)
-    public void nav(View view) {
-        Intent intent = new Intent(this, PantallaCorreo.class);
         startActivity(intent);
     }
 

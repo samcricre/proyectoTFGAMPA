@@ -176,6 +176,16 @@ public class PantallaPerfil extends AppCompatActivity {
             }
         });
 
+        ImageView imageViewCloseSession = findViewById(R.id.imageViewCloseSession);
+        imageViewCloseSession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Iniciar la nueva actividad aquí
+                Intent intent = new Intent(PantallaPerfil.this, PaginaSorteo.class);
+                startActivity(intent);
+            }
+        });
+
 
         //ordenamos por email de usuarios y comparamos si hay igualdad para extraer sus datos
         dr.child("usuarios").orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {

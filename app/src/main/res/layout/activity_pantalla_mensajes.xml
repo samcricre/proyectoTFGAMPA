@@ -121,7 +121,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardviewRecibido"
+                    android:id="@+id/crearSorteo"
                     android:layout_width="125dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="15dp"

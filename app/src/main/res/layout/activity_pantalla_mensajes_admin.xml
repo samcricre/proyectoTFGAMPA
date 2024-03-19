@@ -6,12 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".PantallaMensajesAdmin">
 
+    <TextView
+        android:id="@+id/estadoMensaje"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         app:cardBackgroundColor="#003E77"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -21,6 +33,8 @@
             android:orientation="horizontal">
 
             <!-- Icono para ir a la pantalla principal -->
+
+            <!-- Icono para ir a la bandeja de entrada de correos -->
             <ImageView
                 android:id="@+id/goHomeEmailAd"
                 android:layout_width="wrap_content"
@@ -28,7 +42,6 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/icono_homenav" />
 
-            <!-- Icono para ir a la bandeja de entrada de correos -->
             <ImageView
                 android:id="@+id/goEmail"
                 android:layout_width="wrap_content"
@@ -62,36 +75,38 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="654dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
+    <ListView
+        android:id="@+id/listviewmensajes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/estadoMensaje" />
 
-        <!-- TextView para mostrar el estado del mensaje -->
-        <TextView
-            android:id="@+id/estadoMensaje"
-            android:layout_width="301dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="18dp" />
+    <HorizontalScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/listviewmensajes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator">
 
         <!-- LinearLayout para los botones de acción -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:orientation="horizontal">
 
 
             <!-- Botón para redactar un nuevo correo -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cvRedactarCorreoAdmin"
+                android:id="@+id/volver"
                 android:layout_width="125dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
@@ -125,7 +140,7 @@
 
             <!-- Botón para ver los correos recibidos -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardviewRecibido"
+                android:id="@+id/crearSorteo"
                 android:layout_width="125dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
@@ -190,16 +205,20 @@
             <!-- Botón para ver los correos eliminados -->
 
         </LinearLayout>
+    </HorizontalScrollView>
 
-        <!-- ListView para mostrar los correos -->
-        <ListView
-            android:id="@+id/listviewmensajes"
-            android:layout_width="match_parent"
-            android:layout_height="549dp"
-            android:layout_margin="10dp"
-            android:clipToPadding="false"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="10dp" />
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/estadoMensaje"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    </LinearLayout>
+
+    <!-- HorizontalScrollView para hacer el contenido deslizable horizontalmente -->
+
+    <!-- ListView para mostrar los correos -->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

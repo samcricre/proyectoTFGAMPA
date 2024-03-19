@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="12dp"
+    app:cardBackgroundColor="#B6DCFF"
+    app:cardCornerRadius="15dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#FFFFFF"
+        android:padding="16dp">
+
+        <!-- Nombre del sorteo -->
+        <TextView
+            android:id="@+id/textViewNombreSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxEms="20"
+            android:text="Nombre:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Descripción del sorteo -->
+        <TextView
+            android:id="@+id/textViewDescripcionSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewNombreSorteo"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxEms="30"
+            android:text="Descripción:"
+            android:textSize="14sp" />
+
+        <!-- Premios del sorteo -->
+        <TextView
+            android:id="@+id/textViewPremiosSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewDescripcionSorteo"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxEms="30"
+            android:text="Premios:"
+            android:textSize="12sp" />
+
+        <!-- Estado del sorteo -->
+        <TextView
+            android:id="@+id/textViewEstadoSorteo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewPremiosSorteo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:paddingEnd="16dp"
+            android:text="Estado del sorteo"
+            android:textColor="#888888"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

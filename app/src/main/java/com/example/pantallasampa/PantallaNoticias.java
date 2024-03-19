@@ -45,6 +45,9 @@ public class PantallaNoticias extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pantalla_noticias);
 
+        Button btnIrAPagina = findViewById(R.id.btAnadirNoticia);
+
+
         //Variables de la barra inferior de navegación
         home = findViewById(R.id.goHomeNews);
         email = findViewById(R.id.goEmailNews);
@@ -82,6 +85,16 @@ public class PantallaNoticias extends AppCompatActivity {
             // Realizar la búsqueda en la otra tabla de la base de datos
             buscarNoticiaRelacionada(noticiaKey);
         });
+
+
+        // Configurar un listener para el botón
+        btnIrAPagina.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            navigateTo(PantallaCrearNoticia.class);
+            }
+        });
+
     }
 
     //Metodo comprobar rol para poder publicar noticia
@@ -154,7 +167,9 @@ public class PantallaNoticias extends AppCompatActivity {
                     // La noticia relacionada no existe, iniciar un Intent con los datos de la noticia
                     Noticia noticiaSeleccionada = encontrarNoticia(noticiaKey);
                     if (noticiaSeleccionada != null) {
-                        iniciarIntentLecturaNoticias(noticiaSeleccionada);
+                        // Mostrar un Toast indicando que no se trata de un sorteo
+                        Toast.makeText(PantallaNoticias.this, "No es un sorteo", Toast.LENGTH_SHORT).show();
+                        // Aquí puedes agregar alguna acción adicional si lo deseas
                     }
                 }
             }
@@ -165,6 +180,7 @@ public class PantallaNoticias extends AppCompatActivity {
             }
         });
     }
+
 
     // Método para encontrar una noticia por su clave
     private Noticia encontrarNoticia(String noticiaKey) {

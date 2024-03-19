@@ -45,29 +45,30 @@ public class PantallaCrearNoticia extends AppCompatActivity {
 
 
     //Metodo para publicar la noticia
-    public void publicarNoticia(View view){
-
+    public void publicarNoticia(View view) {
         titular = eTitular.getText().toString();
         subtitulo = eSubtitulo.getText().toString();
         cuerpo = eCuerpo.getText().toString();
 
-        //Creamos objeto noticia
-        Noticia noticia = new Noticia(titular,subtitulo,cuerpo,clicks);
-
-        //Sacamos la key que apuntara a la noticia
+        // Generar una clave única para la noticia
         String key = dr.child("noticias").push().getKey();
+
+        // Crear el objeto Noticia con el noticiaId
+        Noticia noticia = new Noticia( titular, subtitulo, cuerpo, clicks,key );
+
+        // Guardar la noticia en la base de datos
         dr.child("noticias").child(key).setValue(noticia).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-
-                Intent intent = new Intent(PantallaCrearNoticia.this, PantallaNoticias.class);
+                Intent intent =  new Intent(PantallaCrearNoticia.this ,PantallaNoticias.class);
+                intent.putExtra("emailUser", getIntent().getStringExtra("emailUser"));
+                intent.putExtra("keyUsuario", getIntent().getStringExtra("keyUsuario"));
+                intent.putExtra("rol", getIntent().getBooleanExtra("rol",false));
                 startActivity(intent);
             }
         });
-
-
-
     }
+
 
 
 
@@ -75,11 +76,12 @@ public class PantallaCrearNoticia extends AppCompatActivity {
     public void cancelarNoticia(View view){
 
         Intent intent =  new Intent(this,PantallaNoticias.class);
+        intent.putExtra("emailUser", getIntent().getStringExtra("emailUser"));
+        intent.putExtra("keyUsuario", getIntent().getStringExtra("keyUsuario"));
+        intent.putExtra("rol", getIntent().getBooleanExtra("rol",false));
         startActivity(intent);
 
     }
-
-
 
 
 }
