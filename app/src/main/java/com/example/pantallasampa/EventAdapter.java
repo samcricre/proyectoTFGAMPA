@@ -17,16 +17,19 @@ public class EventAdapter extends ArrayAdapter<Evento> {
 
     private Context mContext;
     private ArrayList<Evento> evento;
+    private boolean rol;
+    private String key, emailUser;
 
-    public EventAdapter(Context context, ArrayList <Evento> evento){
+    public EventAdapter(Context context, ArrayList <Evento> evento, boolean rol, String key, String emailUser){
 
         super(context,0, evento);
         mContext = context;
         this.evento = evento;
+        this.rol = rol;
+        this.key = key;
+        this.emailUser = emailUser;
 
     }
-
-
 
     @NonNull
     @Override
@@ -61,8 +64,10 @@ public class EventAdapter extends ArrayAdapter<Evento> {
             public void onClick(View v) {
                 //Ir a la nueva pantalla por detalles también faltan los put extras
                 Intent intent = new Intent(mContext, PantallaLeerEvento.class);
-                intent.putExtra("title",eventTitle.getText().toString());
-                intent.putExtra("descipt", eventDescript.getText().toString());
+                intent.putExtra("rol", rol);
+                intent.putExtra("key", key);
+                intent.putExtra("emailUser", emailUser);
+
                 mContext.startActivity(intent);
             }
         });

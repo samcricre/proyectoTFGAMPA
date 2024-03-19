@@ -27,10 +27,20 @@
                 android:id="@+id/irSeDeEvento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancelar"
+                android:layout_marginHorizontal="15dp"
+                android:layout_weight="1"
+                android:text="Atrás"
                 android:textColor="#FF0000"
-                android:textSize="20dp"
-                android:layout_marginHorizontal="15dp"/>
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/borrarEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:text="Borrar"
+                android:textColor="#FF0000"
+                android:textSize="20dp" />
                 />
         </LinearLayout>
 
