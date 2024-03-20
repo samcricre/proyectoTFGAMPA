@@ -324,6 +324,14 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <ImageView
+                android:id="@+id/imageViewCloseSession"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="15dp"
+                android:contentDescription="Imagen Cerrar Sesión"
+                android:src="@drawable/sorteo" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -341,19 +349,11 @@
                         android:id="@+id/logOut"
                         android:layout_width="150dp"
                         android:layout_height="50dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="15dp"
                         android:backgroundTint="#F44336"
                         android:text="Cerrar Sesión"
                         android:textColor="#FFFFFF"
                         app:cornerRadius="10dp" />
-
-                    <ImageView
-                        android:id="@+id/imageViewCloseSession"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="8dp"
-                        android:src="@drawable/sorteo"
-                        android:contentDescription="Imagen Cerrar Sesión" />
 
                 </LinearLayout>
 

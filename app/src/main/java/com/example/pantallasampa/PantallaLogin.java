@@ -99,7 +99,6 @@ public class PantallaLogin extends AppCompatActivity {
 
                                     //Extraemos tambien su key para poder tener acceso rapido desde el resto de paginas
 
-
                                     usuarioRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
                                         @Override
@@ -135,7 +134,7 @@ public class PantallaLogin extends AppCompatActivity {
                                     //  [El intent debe cambiarse para la versión final]
                                     Intent intent = new Intent(PantallaLogin.this, PantallaEventos.class);
                                     intent.putExtra("emailUser", userEmail);
-                                    intent.putExtra("keyUsuario", keyUsuario);
+                                        intent.putExtra("keyUsuario", keyUsuario);
                                     startActivity(intent);
                                 }
                                 else{
