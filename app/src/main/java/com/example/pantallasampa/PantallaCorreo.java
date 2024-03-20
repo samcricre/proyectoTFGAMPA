@@ -111,8 +111,6 @@ public class PantallaCorreo extends AppCompatActivity {
     // Método para cancelar el correo y volver a la pantalla de mensajes
     private void cancelarCorreo() {
         Toast.makeText(this, "Correo cancelado", Toast.LENGTH_SHORT).show();
-        // Vuelve a la pantalla de mensajes
-        Intent intent = new Intent(this, PantallaMensajes.class);
-        startActivity(intent);
+        finish();
     }
 }

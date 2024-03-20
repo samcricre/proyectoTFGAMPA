@@ -237,7 +237,6 @@ public class PantallaCrearCorreoAdmin extends AppCompatActivity {
     }
 
     public void irAPantalla() {
-        Intent intent = new Intent(this, PantallaMensajesAdmin.class);
-        startActivity(intent);
+        finish();
     }
 }

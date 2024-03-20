@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="#FFFFFF"
-    android:onClick="navCorreos"
     android:scrollbars="vertical"
     tools:context=".PantallaPerfil">
 
@@ -35,7 +34,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="navCorreos"
                 app:srcCompat="@drawable/icono_correonav" />
 
             <ImageView

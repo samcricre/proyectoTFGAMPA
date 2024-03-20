@@ -45,10 +45,10 @@ import java.util.Map;
 
 public class PantallaPerfil extends AppCompatActivity {
 
-    private ImageView home, email, event, news;
-    private boolean rol;
-    private Button out1;
-    private Button out2;
+    ImageView home, email, event, news;
+    boolean rol;
+    Button out1;
+    Button out2;
 
     //Declaramos la variables sobre las que vamos a trabajar
     TextView nombreUsuario;
@@ -580,17 +580,6 @@ public class PantallaPerfil extends AppCompatActivity {
         Intent intent = new Intent(this, PantallaCrearHijo.class);
         intent.putExtra("emailUser",userEmail);//Enviamos el email con el que estamos trabajando a la pantalla de crear Hijo
         intent.putExtra("keyUsuario", keyUsuario);
-        startActivity(intent);
-
-    }
-
-
-    //Metodo para navegar a pagina correos
-    public void navCorreos (View view){
-
-        Intent intent = new Intent(this, PantallaMensajes.class);
-        intent.putExtra("keyUsuario", keyUsuario);
-        intent.putExtra("emailUser",userEmail);
         startActivity(intent);
 
     }
