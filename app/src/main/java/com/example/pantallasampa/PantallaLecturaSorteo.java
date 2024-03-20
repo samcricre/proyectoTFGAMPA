@@ -25,6 +25,8 @@ import java.util.Random;
 
 public class PantallaLecturaSorteo extends AppCompatActivity {
 
+
+
     private TextView nombreSorteoTextView;
     private TextView premiosSorteoTextView;
     private TextView descripcionSorteoTextView;
