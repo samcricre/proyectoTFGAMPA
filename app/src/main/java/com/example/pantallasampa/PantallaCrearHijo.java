@@ -43,6 +43,7 @@ public class PantallaCrearHijo extends AppCompatActivity {
     EditText apellidos;
     EditText edad;
     Button btAñadirHijo;
+    TextView cancelar;
 
     Spinner spinnerCursos;
 
@@ -72,6 +73,7 @@ public class PantallaCrearHijo extends AppCompatActivity {
         spinnerCursos = findViewById(R.id.spCursos);
         btAñadirHijo = findViewById(R.id.btAnadirHijo);
         spinnerSexo = findViewById(R.id.spinnerSexo);
+        cancelar = findViewById(R.id.btCancelarHijo);
 
         //Vinculamos el arrayList al spinner a traves de un adaptador
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cursos);
@@ -112,14 +114,13 @@ public class PantallaCrearHijo extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-
-
+        //Hacemos que el botón cancelar retroceda a la pantalla anterior
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -179,8 +180,6 @@ public class PantallaCrearHijo extends AppCompatActivity {
 
                     }
 
-
-
                 }
 
             }
@@ -191,11 +190,6 @@ public class PantallaCrearHijo extends AppCompatActivity {
             }
         });
 
-
     }
-
-
-
-
 
 }
