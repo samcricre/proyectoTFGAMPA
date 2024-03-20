@@ -58,6 +58,7 @@
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_margin="15dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/listviewmensajes"
         app:layout_constraintEnd_toEndOf="parent"
