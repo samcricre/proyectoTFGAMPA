@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +53,7 @@ public class SorteoAdapter extends ArrayAdapter<Sorteos> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, PantallaLecturaSorteo.class);
+                Toast.makeText(mContext, "Código de noticia: " + sorteo.getCodigoNoticia(), Toast.LENGTH_SHORT).show();
                 // Pasa el ID de la noticia a la actividad de detalles del sorteo
                 intent.putExtra("codigoNoticia", sorteo.getCodigoNoticia());
                 mContext.startActivity(intent);
