@@ -126,7 +126,7 @@ public class PantallaRegistro extends AppCompatActivity {
 
                 String userEmail = user.getEmail();
 
-                Intent intent = new Intent(PantallaRegistro.this,PantallaPerfil.class);
+                Intent intent = new Intent(PantallaRegistro.this,PantallaEventos.class);
                 intent.putExtra("emailUser", userEmail);//Pasamos el email del usuario dentro de la app para localizarle y extraer los datos
                 startActivity(intent);
             }
@@ -167,6 +167,11 @@ public class PantallaRegistro extends AppCompatActivity {
         if(!validarCorreo(email)){
             valid = false;
             Toast.makeText(this, "Formato del correo es incorrecto", Toast.LENGTH_SHORT).show();
+        }
+
+        if(passw.length() < 6){
+            valid = false;
+            Toast.makeText(this, "La contraseña tiene que tener 6 caracteres mínimos", Toast.LENGTH_SHORT).show();
         }
 
         if(!passw.equals(passwConf)){
