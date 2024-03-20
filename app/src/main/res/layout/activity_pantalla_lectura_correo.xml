@@ -33,7 +33,7 @@
                 android:layout_weight="1" />
 
             <ImageView
-                android:id="@+id/deleteButtonCorreo"
+                android:id="@+id/createButtonCorreo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"

@@ -82,8 +82,7 @@ public class PantallaNoticias extends AppCompatActivity {
             Toast.makeText(PantallaNoticias.this, "Clic en la noticia: " + noticiaSeleccionada.getTitular(), Toast.LENGTH_SHORT).show();
 
 
-            // Realizar la búsqueda en la otra tabla de la base de datos
-            buscarNoticiaRelacionada(noticiaKey);
+
         });
 
 
@@ -153,87 +152,6 @@ public class PantallaNoticias extends AppCompatActivity {
         });
     }
 
-    // Método para buscar la noticia relacionada en otra tabla de la base de datos
-    private void buscarNoticiaRelacionada(String noticiaKey) {
-        DatabaseReference otraTablaRef = FirebaseDatabase.getInstance().getReference().child("otraTabla");
-        otraTablaRef.child(noticiaKey).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Verificar si la noticia relacionada existe en la otra tabla
-                if (snapshot.exists()) {
-                    // La noticia relacionada existe, muestra el diálogo para apuntarse al sorteo
-                    mostrarDialogoApuntarseAlSorteo(noticiaKey);
-                } else {
-                    // La noticia relacionada no existe, iniciar un Intent con los datos de la noticia
-                    Noticia noticiaSeleccionada = encontrarNoticia(noticiaKey);
-                    if (noticiaSeleccionada != null) {
-                        // Mostrar un Toast indicando que no se trata de un sorteo
-                        Toast.makeText(PantallaNoticias.this, "No es un sorteo", Toast.LENGTH_SHORT).show();
-                        // Aquí puedes agregar alguna acción adicional si lo deseas
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Manejar errores si es necesario
-            }
-        });
-    }
-
-
-    // Método para encontrar una noticia por su clave
-    private Noticia encontrarNoticia(String noticiaKey) {
-        for (Noticia noticia : noticias) {
-            if (noticia.getNoticiaId().equals(noticiaKey)) {
-                return noticia;
-            }
-        }
-        return null;
-    }
-
-    // Método para mostrar el diálogo de apuntarse al sorteo
-    private void mostrarDialogoApuntarseAlSorteo(String noticiaKey) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Sorteo");
-        builder.setMessage("¿Quieres apuntarte al sorteo relacionado con esta noticia?");
-
-        // Agrega botón positivo para apuntarse al sorteo
-        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Obtener el correo electrónico del usuario
-                String userEmail = emailUser;
-
-                // Agregar el correo electrónico del usuario a la lista de participantes del sorteo
-                DatabaseReference sorteosRef = FirebaseDatabase.getInstance().getReference().child("sorteos");
-                sorteosRef.orderByChild("noticiaId").equalTo(noticiaKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot sorteoSnapshot : dataSnapshot.getChildren()) {
-                            DatabaseReference sorteoRef = sorteosRef.child(sorteoSnapshot.getKey());
-                            DatabaseReference participantesRef = sorteoRef.child("participantes").push();
-                            participantesRef.setValue(userEmail);
-                        }
-                        mostrarMensajeConfirmacion();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Manejar errores si es necesario
-                    }
-                });
-            }
-        });
-
-        // Agrega botón negativo para cancelar
-        builder.setNegativeButton("No", (dialog, which) -> {
-            // No hacer nada o puedes agregar alguna acción si lo deseas
-        });
-
-        // Muestra el diálogo
-        builder.show();
-    }
 
     // Método para mostrar un mensaje de confirmación
     private void mostrarMensajeConfirmacion() {
