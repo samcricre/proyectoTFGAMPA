@@ -15,47 +15,114 @@
         android:background="#FFFFFF"
         android:padding="16dp">
 
-        <!-- Nombre del sorteo -->
-        <TextView
-            android:id="@+id/textViewNombreSorteo"
+        <!-- Row para el nombre del sorteo -->
+        <LinearLayout
+            android:id="@+id/rowNombreSorteo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxEms="20"
-            android:text="Nombre:"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <!-- Descripción del sorteo -->
-        <TextView
-            android:id="@+id/textViewDescripcionSorteo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textViewNombreSorteo"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:maxEms="30"
-            android:text="Descripción:"
-            android:textSize="14sp" />
+            <!-- Texto "Nombre:" -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <!-- Premios del sorteo -->
-        <TextView
-            android:id="@+id/textViewPremiosSorteo"
+            <!-- Aquí se mostrará el nombre del sorteo -->
+            <TextView
+                android:id="@+id/textViewNombreSorteo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxEms="20"
+                android:maxLines="2"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <!-- Espacio entre filas -->
+        <View
+            android:id="@+id/rowSeparator1"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_below="@id/rowNombreSorteo" />
+
+        <!-- Row para la descripción del sorteo -->
+        <LinearLayout
+            android:id="@+id/rowDescripcionSorteo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textViewDescripcionSorteo"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:maxEms="30"
-            android:text="Premios:"
-            android:textSize="12sp" />
+            android:orientation="horizontal"
+            android:layout_below="@id/rowSeparator1">
+
+            <!-- Texto "Descripción:" -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descripción:"
+                android:textSize="14sp" />
+
+            <!-- Aquí se mostrará la descripción del sorteo -->
+            <TextView
+                android:id="@+id/textViewDescripcionSorteo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxEms="30"
+                android:maxLines="3"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Espacio entre filas -->
+        <View
+            android:id="@+id/rowSeparator2"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_below="@id/rowDescripcionSorteo" />
+
+        <!-- Row para los premios del sorteo -->
+        <LinearLayout
+            android:id="@+id/rowPremiosSorteo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/rowSeparator2">
+
+            <!-- Texto "Premios:" -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Premios:"
+                android:textSize="12sp" />
+
+            <!-- Aquí se mostrarán los premios del sorteo -->
+            <TextView
+                android:id="@+id/textViewPremiosSorteo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxEms="30"
+                android:maxLines="2"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Espacio entre filas -->
+        <View
+            android:id="@+id/rowSeparator3"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_below="@id/rowPremiosSorteo" />
 
         <!-- Estado del sorteo -->
         <TextView
             android:id="@+id/textViewEstadoSorteo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textViewPremiosSorteo"
+            android:layout_below="@id/rowSeparator3"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="8dp"
             android:paddingEnd="16dp"

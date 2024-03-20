@@ -3,7 +3,6 @@ package com.example.pantallasampa;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,7 +21,7 @@ public class PaginaSorteo extends AppCompatActivity {
 
     private ListView listViewSorteos;
     private List<Sorteos> listaSorteos;
-    private ArrayAdapter<String> arrayAdapter;
+    private SorteoAdapter sorteoAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +30,8 @@ public class PaginaSorteo extends AppCompatActivity {
 
         listViewSorteos = findViewById(R.id.listviewmensajes);
         listaSorteos = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        listViewSorteos.setAdapter(arrayAdapter);
+        sorteoAdapter = new SorteoAdapter(this, listaSorteos);
+        listViewSorteos.setAdapter(sorteoAdapter);
 
         // Obtener referencia a la base de datos de Firebase
         DatabaseReference sorteosRef = FirebaseDatabase.getInstance().getReference().child("sorteos");
@@ -46,7 +45,7 @@ public class PaginaSorteo extends AppCompatActivity {
                     Sorteos sorteo = snapshot.getValue(Sorteos.class);
                     listaSorteos.add(sorteo);
                 }
-                actualizarListaSorteos();
+                sorteoAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -69,8 +68,6 @@ public class PaginaSorteo extends AppCompatActivity {
 
         // Obtener referencia de la CardView para navegar a otra página
         View otraPaginaCardView = findViewById(R.id.crearSorteo);
-
-        // Establecer OnClickListener para la CardView "otraPaginaCardView"
         otraPaginaCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,19 +76,5 @@ public class PaginaSorteo extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void actualizarListaSorteos() {
-        if (listaSorteos.isEmpty()) {
-            // Si no hay sorteos, mostrar un mensaje con un Toast
-            Toast.makeText(this, "No hay sorteos disponibles en este momento", Toast.LENGTH_SHORT).show();
-        } else {
-            // Si hay sorteos, mostrar la lista
-            arrayAdapter.clear();
-            for (Sorteos sorteo : listaSorteos) {
-                arrayAdapter.add(sorteo.getNombre());
-            }
-            arrayAdapter.notifyDataSetChanged();
-        }
     }
 }
